@@ -22,10 +22,17 @@ public class Player_Movement : MonoBehaviour
         animator.SetFloat("Horizontal", moveDirection.x);
         animator.SetFloat("Vertical", moveDirection.y);
         animator.SetFloat("Speed", moveDirection.sqrMagnitude);
+
     }
 
     private void FixedUpdate()
     {
         rb.velocity = new Vector2(moveDirection.x * moveSpeed, moveDirection.y * moveSpeed);
+		if (Input.GetKey(KeyCode.LeftShift)){
+			moveSpeed = 1f;
+		}
+		else{
+			moveSpeed = 3f;
+		}
     }
 }
