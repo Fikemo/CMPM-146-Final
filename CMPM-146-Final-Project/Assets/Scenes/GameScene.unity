@@ -131,20 +131,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-<<<<<<< Updated upstream:CMPM-146-Final-Project/Assets/Scenes/GameScene.unity
   - component: {fileID: 94125756}
   - component: {fileID: 94125755}
   - component: {fileID: 94125759}
   - component: {fileID: 94125758}
   - component: {fileID: 94125757}
-=======
-  - component: {fileID: 292219660}
-  - component: {fileID: 292219659}
-  - component: {fileID: 292219658}
-  - component: {fileID: 292219657}
-  - component: {fileID: 292219661}
-  - component: {fileID: 292219662}
->>>>>>> Stashed changes:CMPM-146-Final-Project/Assets/Scenes/SampleScene.unity
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -211,8 +202,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 94125754}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.505, y: -0.374, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -236,18 +227,12 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
-<<<<<<< Updated upstream:CMPM-146-Final-Project/Assets/Scenes/GameScene.unity
 --- !u!114 &94125758
 MonoBehaviour:
-=======
---- !u!70 &292219662
-CapsuleCollider2D:
->>>>>>> Stashed changes:CMPM-146-Final-Project/Assets/Scenes/SampleScene.unity
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< Updated upstream:CMPM-146-Final-Project/Assets/Scenes/GameScene.unity
   m_GameObject: {fileID: 94125754}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -279,19 +264,6 @@ Rigidbody2D:
   m_CollisionDetection: 0
   m_Constraints: 4
 --- !u!1 &248408548
-=======
-  m_GameObject: {fileID: 292219656}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.000000029802322, y: -0.29130888}
-  m_Size: {x: 0.5420752, y: 0.72988224}
-  m_Direction: 0
---- !u!1 &592634555
->>>>>>> Stashed changes:CMPM-146-Final-Project/Assets/Scenes/SampleScene.unity
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -374,11 +346,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< Updated upstream:CMPM-146-Final-Project/Assets/Scenes/GameScene.unity
 --- !u!1 &675180992
-=======
---- !u!1 &1779627659
->>>>>>> Stashed changes:CMPM-146-Final-Project/Assets/Scenes/SampleScene.unity
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -386,109 +354,29 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-<<<<<<< Updated upstream:CMPM-146-Final-Project/Assets/Scenes/GameScene.unity
   - component: {fileID: 675180994}
   - component: {fileID: 675180993}
   m_Layer: 0
   m_Name: Enemy
-=======
-  - component: {fileID: 1779627661}
-  - component: {fileID: 1779627660}
-  m_Layer: 0
-  m_Name: Grid
->>>>>>> Stashed changes:CMPM-146-Final-Project/Assets/Scenes/SampleScene.unity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
-<<<<<<< Updated upstream:CMPM-146-Final-Project/Assets/Scenes/GameScene.unity
 --- !u!212 &675180993
 SpriteRenderer:
-=======
---- !u!156049354 &1779627660
-Grid:
->>>>>>> Stashed changes:CMPM-146-Final-Project/Assets/Scenes/SampleScene.unity
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< Updated upstream:CMPM-146-Final-Project/Assets/Scenes/GameScene.unity
   m_GameObject: {fileID: 675180992}
-=======
-  m_GameObject: {fileID: 1779627659}
-  m_Enabled: 1
-  m_CellSize: {x: 1, y: 1, z: 0}
-  m_CellGap: {x: 0, y: 0, z: 0}
-  m_CellLayout: 0
-  m_CellSwizzle: 0
---- !u!4 &1779627661
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1779627659}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1899417931}
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1899417930
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1899417931}
-  - component: {fileID: 1899417933}
-  - component: {fileID: 1899417932}
-  m_Layer: 0
-  m_Name: Tilemap
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1899417931
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1899417930}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1779627661}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!483693784 &1899417932
-TilemapRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1899417930}
->>>>>>> Stashed changes:CMPM-146-Final-Project/Assets/Scenes/SampleScene.unity
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
-<<<<<<< Updated upstream:CMPM-146-Final-Project/Assets/Scenes/GameScene.unity
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-=======
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
->>>>>>> Stashed changes:CMPM-146-Final-Project/Assets/Scenes/SampleScene.unity
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -515,7 +403,6 @@ TilemapRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-<<<<<<< Updated upstream:CMPM-146-Final-Project/Assets/Scenes/GameScene.unity
   m_Sprite: {fileID: 5208297073197218389, guid: 34340e2821b2df54caffa82d7a67af52, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -529,23 +416,10 @@ TilemapRenderer:
   m_SpriteSortPoint: 0
 --- !u!4 &675180994
 Transform:
-=======
-  m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
-  m_MaxChunkCount: 16
-  m_MaxFrameAge: 16
-  m_SortOrder: 0
-  m_Mode: 0
-  m_DetectChunkCullingBounds: 0
-  m_MaskInteraction: 0
---- !u!1839735485 &1899417933
-Tilemap:
->>>>>>> Stashed changes:CMPM-146-Final-Project/Assets/Scenes/SampleScene.unity
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< Updated upstream:CMPM-146-Final-Project/Assets/Scenes/GameScene.unity
   m_GameObject: {fileID: 675180992}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.13, y: 0.08, z: 0}
@@ -554,249 +428,3 @@ Tilemap:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-=======
-  m_GameObject: {fileID: 1899417930}
-  m_Enabled: 1
-  m_Tiles:
-  - first: {x: -3, y: -1, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 3
-      m_TileSpriteIndex: 3
-      m_TileMatrixIndex: 2
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  - first: {x: -1, y: -1, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 3
-      m_TileSpriteIndex: 3
-      m_TileMatrixIndex: 2
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  - first: {x: 1, y: -1, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 3
-      m_TileSpriteIndex: 3
-      m_TileMatrixIndex: 2
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  - first: {x: -3, y: 0, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  - first: {x: -1, y: 0, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  - first: {x: 1, y: 0, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  - first: {x: -3, y: 1, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  - first: {x: -1, y: 1, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  - first: {x: 1, y: 1, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  - first: {x: -3, y: 2, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 2
-      m_TileSpriteIndex: 2
-      m_TileMatrixIndex: 1
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  - first: {x: -2, y: 2, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 1
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  - first: {x: -1, y: 2, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 1
-      m_TileSpriteIndex: 1
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  - first: {x: 0, y: 2, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 1
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  - first: {x: 1, y: 2, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 2
-      m_TileSpriteIndex: 2
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  m_AnimatedTiles: {}
-  m_TileAssetArray:
-  - m_RefCount: 8
-    m_Data: {fileID: 11400000, guid: 881fe6e10d30cb240b026fbe8ae2e2cb, type: 2}
-  - m_RefCount: 1
-    m_Data: {fileID: 11400000, guid: b85f84f285cfef046ab0ca1bbd6deaac, type: 2}
-  - m_RefCount: 2
-    m_Data: {fileID: 11400000, guid: af085092853ae0f42aa086101ac39796, type: 2}
-  - m_RefCount: 3
-    m_Data: {fileID: 11400000, guid: c801bf4908b4eb846bf8eee2044b6986, type: 2}
-  m_TileSpriteArray:
-  - m_RefCount: 8
-    m_Data: {fileID: 21300000, guid: 3073b1417cb30954796c43adecf6a197, type: 3}
-  - m_RefCount: 1
-    m_Data: {fileID: 21300000, guid: ed5526fe26c203d41bdaac61e110ae4a, type: 3}
-  - m_RefCount: 2
-    m_Data: {fileID: 21300000, guid: 65da10d68aaf2c64897fa6d81605e8e3, type: 3}
-  - m_RefCount: 3
-    m_Data: {fileID: 21300000, guid: 07c93ba7be2924e41ba7f95e15febfed, type: 3}
-  m_TileMatrixArray:
-  - m_RefCount: 8
-    m_Data:
-      e00: 5
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 5
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 5
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-  - m_RefCount: 3
-    m_Data:
-      e00: 0.00000029802322
-      e01: -4.9999995
-      e02: 0
-      e03: 0
-      e10: 4.9999995
-      e11: 0.00000029802322
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 5
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-  - m_RefCount: 3
-    m_Data:
-      e00: -5
-      e01: 0.0000004371139
-      e02: 0
-      e03: 0
-      e10: -0.0000004371139
-      e11: -5
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 5
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-  m_TileColorArray:
-  - m_RefCount: 14
-    m_Data: {r: 1, g: 1, b: 1, a: 1}
-  m_TileObjectToInstantiateArray: []
-  m_AnimationFrameRate: 1
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Origin: {x: -3, y: -1, z: 0}
-  m_Size: {x: 5, y: 4, z: 1}
-  m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
-  m_TileOrientation: 0
-  m_TileOrientationMatrix:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
->>>>>>> Stashed changes:CMPM-146-Final-Project/Assets/Scenes/SampleScene.unity
