@@ -25,7 +25,7 @@ public class maze : MonoBehaviour
 
                 GameObject t;
 
-                t = (GameObject)(Instantiate(wall, new Vector3(50 - column * 10, 1.5f, 50 - row * 10), Quaternion.identity));
+                t = (GameObject)(Instantiate(wall, new Vector2(50 - column * 10, 50 - row * 10), Quaternion.identity));
 
             }
         }
