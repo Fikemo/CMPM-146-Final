@@ -7,6 +7,7 @@ public class maze : MonoBehaviour
     public GameObject wall;
     public GameObject floor;
     public GameObject key;
+
     // Start is called before the first frame update
     void Start()
     {
