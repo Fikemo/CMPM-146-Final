@@ -7,7 +7,7 @@ public class maze : MonoBehaviour
     public GameObject wall;
     public GameObject floor;
     public GameObject key;
-
+    public GameObject computer;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,13 +40,17 @@ public class maze : MonoBehaviour
                 GameObject t;
                 t = (GameObject)(Instantiate(floor, new Vector2(columnTracking, rows), Quaternion.identity));
             }
-            if (s[i] == '1') {
+            if (s[i] == '2') {
                 GameObject t;
                 t = (GameObject)(Instantiate(wall, new Vector2(columnTracking, rows), Quaternion.identity));
             }
             if (s[i] == '4') {
                 GameObject t;
                 t = (GameObject)(Instantiate(key, new Vector2(columnTracking, rows), Quaternion.identity));
+            }
+            if (s[i] == '5') {
+                GameObject t;
+                t = (GameObject)(Instantiate(computer, new Vector2(columnTracking, rows), Quaternion.identity));
             }
             columnTracking = columnTracking + 1.6f;
             columnCounter++;
