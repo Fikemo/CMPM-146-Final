@@ -21,14 +21,16 @@ public class maze : MonoBehaviour
             }
             columns++;
         }
-        columns--;
-        Debug.Log(s);
-        Debug.Log(columns);
+
         s = s.Replace("\n","");
+
+        Debug.Log(s);
+        Debug.Log(s[3]);
+        Debug.Log(columns);
 
         for (i = 0; i < s.Length; i++) {
             if (columnCounter == columns) {
-                rows = rows - 1.5f;
+                rows = rows - 1.6f;
                 columnTracking = 0f;
                 columnCounter = 0;
             }
@@ -36,7 +38,7 @@ public class maze : MonoBehaviour
                 GameObject t;
                 t = (GameObject)(Instantiate(wall, new Vector2(columnTracking, rows), Quaternion.identity));
             }
-            columnTracking = columnTracking + 1.5f;
+            columnTracking = columnTracking + 1.6f;
             columnCounter++;
         }
     }
