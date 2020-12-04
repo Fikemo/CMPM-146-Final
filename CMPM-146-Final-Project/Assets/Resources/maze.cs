@@ -5,7 +5,7 @@ using UnityEngine;
 public class maze : MonoBehaviour
 {
     public GameObject wall;
-
+    public GameObject floor;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +37,10 @@ public class maze : MonoBehaviour
             if (s[i] == '1') {
                 GameObject t;
                 t = (GameObject)(Instantiate(wall, new Vector2(columnTracking, rows), Quaternion.identity));
+            }
+            if (s[i] == '0') {
+                GameObject t;
+                t = (GameObject)(Instantiate(floor, new Vector2(columnTracking, rows), Quaternion.identity));
             }
             columnTracking = columnTracking + 1.6f;
             columnCounter++;
