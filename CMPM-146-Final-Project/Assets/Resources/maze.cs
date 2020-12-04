@@ -11,23 +11,33 @@ public class maze : MonoBehaviour
     {
         TextAsset t1 = (TextAsset)Resources.Load("level", typeof(TextAsset));
         string s = t1.text;
-        int i;
+
+        int i, columnCounter = 0, columns = 0;
+        float rows = 0f, columnTracking = 0f;
+        
+        for (i = 0; i < s.Length; i++) {
+            if (s[i] == '\n') {
+                break;
+            }
+            columns++;
+        }
+        columns--;
+        Debug.Log(s);
+        Debug.Log(columns);
         s = s.Replace("\n","");
 
         for (i = 0; i < s.Length; i++) {
-            if (s[i] == '1') {
-
-                int column, row;
-
-                column = i % 10;
-
-                row = i / 10;
-
-                GameObject t;
-
-                t = (GameObject)(Instantiate(wall, new Vector2(50 - column * 10, 50 - row * 10), Quaternion.identity));
-
+            if (columnCounter == columns) {
+                rows = rows - 1.5f;
+                columnTracking = 0f;
+                columnCounter = 0;
             }
+            if (s[i] == '1') {
+                GameObject t;
+                t = (GameObject)(Instantiate(wall, new Vector2(columnTracking, rows), Quaternion.identity));
+            }
+            columnTracking = columnTracking + 1.5f;
+            columnCounter++;
         }
     }
 }
