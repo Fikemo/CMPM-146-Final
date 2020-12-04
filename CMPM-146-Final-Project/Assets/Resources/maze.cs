@@ -9,9 +9,9 @@ public class maze : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        TextAsset t1 = (TextAsset)Resources.Load("maze", typeof(TextAsset));
+        TextAsset t1 = (TextAsset)Resources.Load("level", typeof(TextAsset));
         string s = t1.text;
-        int i, j;
+        int i;
         s = s.Replace("\n","");
 
         for (i = 0; i < s.Length; i++) {
