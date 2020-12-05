@@ -8,6 +8,7 @@ public class maze : MonoBehaviour
     public GameObject floor;
     public GameObject key;
     public GameObject computer;
+	public GameObject exit;
     // Start is called before the first frame update
     void Start()
     {
@@ -43,6 +44,10 @@ public class maze : MonoBehaviour
             if (s[i] == '2') {
                 GameObject t;
                 t = (GameObject)(Instantiate(wall, new Vector2(columnTracking, rows), Quaternion.identity));
+            }
+			if (s[i] == '3') {
+                GameObject t;
+                t = (GameObject)(Instantiate(exit, new Vector2(columnTracking, rows), Quaternion.identity));
             }
             if (s[i] == '4') {
                 GameObject t;
