@@ -28,10 +28,6 @@ public class maze : MonoBehaviour
 
         s = s.Replace("\n","");
 
-        Debug.Log(s);
-        Debug.Log(s[3]);
-        Debug.Log(columns);
-
         for (i = 0; i < s.Length; i++) {
             if (columnCounter == columns) {
                 rows = rows - 1.6f;
