@@ -4,35 +4,44 @@ using UnityEngine;
 
 public class Player_Movement : MonoBehaviour
 {
-
-    float horizontal;
-    float vertical;
-
     public float moveSpeed = 5f;
-
-    public Rigidbody2D rb;
+    public Transform movePoint;
     public Animator animator;
-    private Vector2 moveDirection;
-    void Update()
-    {
-        horizontal = Input.GetAxisRaw("Horizontal");
-        vertical = Input.GetAxisRaw("Vertical");
 
-        moveDirection = new Vector2(horizontal, vertical).normalized;
-        animator.SetFloat("Horizontal", moveDirection.x);
-        animator.SetFloat("Vertical", moveDirection.y);
-        animator.SetFloat("Speed", moveDirection.sqrMagnitude);
-
+    void Start() {
+        movePoint.parent = null;
     }
 
-    private void FixedUpdate()
+    void Update()
     {
-        rb.velocity = new Vector2(moveDirection.x * moveSpeed, moveDirection.y * moveSpeed);
-		if (Input.GetKey(KeyCode.LeftShift)){
-			moveSpeed = 1f;
-		}
-		else{
-			moveSpeed = 3f;
-		}
+        transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, movePoint.position) <= .05f) {
+            if (Input.GetAxisRaw("Horizontal") == 1f) {
+                movePoint.position += new Vector3(Input.GetAxisRaw("Horizontal") + .6f, 0f, 0f);
+                animator.SetFloat("Vertical", 0f);
+                animator.SetFloat("Horizontal", Input.GetAxisRaw("Horizontal"));
+                animator.SetFloat("Speed", movePoint.position.sqrMagnitude);
+            }
+            if (Input.GetAxisRaw("Horizontal") == -1f) {
+                movePoint.position += new Vector3(Input.GetAxisRaw("Horizontal") + -.6f, 0f, 0f);
+                animator.SetFloat("Vertical", 0f);
+                animator.SetFloat("Horizontal", Input.GetAxisRaw("Horizontal"));
+                animator.SetFloat("Speed", movePoint.position.sqrMagnitude);
+            }
+            if (Input.GetAxisRaw("Vertical") == 1f) {
+                movePoint.position += new Vector3(0f, Input.GetAxisRaw("Vertical") + .6f, 0f);
+                animator.SetFloat("Horizontal", 0f);
+                animator.SetFloat("Vertical", Input.GetAxisRaw("Vertical"));
+                animator.SetFloat("Speed", movePoint.position.sqrMagnitude);
+            }
+            if (Input.GetAxisRaw("Vertical") == -1f) {
+                movePoint.position += new Vector3(0f, Input.GetAxisRaw("Vertical") + -.6f, 0f);
+                animator.SetFloat("Horizontal", 0f);
+                animator.SetFloat("Vertical", Input.GetAxisRaw("Vertical"));
+                animator.SetFloat("Speed", movePoint.position.sqrMagnitude);
+            }
+        }
+
     }
 }

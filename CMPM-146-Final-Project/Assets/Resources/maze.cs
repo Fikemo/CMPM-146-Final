@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class maze : MonoBehaviour
 {
+    public GameObject enemy;
     public GameObject wall;
     public GameObject floor;
     public GameObject key;
@@ -56,6 +57,11 @@ public class maze : MonoBehaviour
             if (s[i] == '5') {
                 GameObject t;
                 t = (GameObject)(Instantiate(computer, new Vector2(columnTracking, rows), Quaternion.identity));
+            }
+            if (s[i] == '6' || s[i] == '7' || s[i] == '8') {
+                GameObject t;
+                t = (GameObject)(Instantiate(floor, new Vector2(columnTracking, rows), Quaternion.identity));
+                t = (GameObject)(Instantiate(enemy, new Vector2(columnTracking, rows), Quaternion.identity));
             }
             columnTracking = columnTracking + 1.6f;
             columnCounter++;
