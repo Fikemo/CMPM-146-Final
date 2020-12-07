@@ -52,6 +52,7 @@ public class maze : MonoBehaviour
             }
             if (s[i] == '4') {
                 GameObject t;
+                t = (GameObject)(Instantiate(floor, new Vector2(columnTracking, rows), Quaternion.identity));
                 t = (GameObject)(Instantiate(key, new Vector2(columnTracking, rows), Quaternion.identity));
             }
             if (s[i] == '5') {

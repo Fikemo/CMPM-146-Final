@@ -42,6 +42,5 @@ public class Player_Movement : MonoBehaviour
                 animator.SetFloat("Speed", movePoint.position.sqrMagnitude);
             }
         }
-
     }
 }
