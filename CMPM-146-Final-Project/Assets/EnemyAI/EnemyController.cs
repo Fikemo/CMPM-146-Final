@@ -9,7 +9,7 @@ public class EnemyController : MonoBehaviour {
     public IBehaviourTreeNode tree;
     
     //////////////////////////// ENEMY MOVEMENT PARAMETERS ////////////////////////////
-    private float EnemySpeed = 1f;
+    private float EnemySpeed = 3f;
     public Transform movePoint;
     public Collider2D enemyColl;
     private float saveHoriz = 0f;
@@ -21,17 +21,17 @@ public class EnemyController : MonoBehaviour {
 
         var builder = new BehaviourTreeBuilder();
         this.tree = builder
-		.Sequence("my-sequence")
+		.Selector("my-sequence")
 			.Do("action1",  t => 
 			{
 				// Action 1.
                 Debug.Log("Hello");
-				return BehaviourTreeStatus.Success;
+				return BehaviourTreeStatus.Failure;
 			})
 			.Do("action2", t => 
 			{
                 // Action 2.
-                Debug.Log("Goodbye");
+                MoveUp();
                 return BehaviourTreeStatus.Success;
 			})
             .Do("action3", t => 
@@ -65,7 +65,7 @@ public class EnemyController : MonoBehaviour {
 
     void FixedUpdate() {
         float laserLength = 50f;
-        Vector2 startPosition = (Vector2)transform.position + new Vector2(1.6f, 0f); // CHANGING THESE VALUES HERE WILL CHANGE WHER TH
+        Vector2 startPosition = (Vector2)transform.position + new Vector2(0f, -1.6f);
         int layerMask = LayerMask.GetMask("Default");
 
         RaycastHit2D hit = Physics2D.Raycast(startPosition, Vector2.right, laserLength, layerMask, 0);
