@@ -351,7 +351,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd4a7b5206ed5eb4d9fd3d486eefdad2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
   movePoint: {fileID: 1473158902}
   animator: {fileID: 94125757}
   coll: {fileID: 11700031}
@@ -870,7 +869,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 675180992}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f49e50f54bfb08b4b8705a8569c93f9f, type: 3}
+  m_Script: {fileID: 11500000, guid: fea0b9a898e4c284187e38098245fe52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &675180998

@@ -16,14 +16,6 @@ public class Player_Movement : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift)) {
-            moveSpeed = 0.1f;
-            Debug.Log(moveSpeed);
-        }
-        else {
-            moveSpeed = 5f;
-            Debug.Log(moveSpeed);
-        }
 
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
 

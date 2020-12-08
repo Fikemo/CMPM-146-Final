@@ -2,16 +2,48 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-
-public class Sight : MonoBehaviour {
+using FluentBehaviourTree;
+public class EnemyController : MonoBehaviour {
 
     //public bool enemySpotted;
     //public bool enemyHeard;
 
+    public IBehaviourTreeNode tree;
+
+    void Start() {
+        var builder = new BehaviourTreeBuilder();
+        this.tree = builder
+		.Selector("my-sequence")
+			.Do("action1",  t => 
+			{
+				// Action 1.
+                Debug.Log("Hey");
+				return BehaviourTreeStatus.Success;
+			})
+			.Do("action2", t => 
+			{
+				// Action 2.
+                Debug.Log("Bye");
+				return BehaviourTreeStatus.Failure;
+			})
+            .Do("action3", t => 
+			{
+				// Action 2.
+                Debug.Log("Luc");
+				return BehaviourTreeStatus.Success;
+			})
+		.End()
+		.Build();
+    }
+
+    void Update() {
+        this.tree.Tick(new TimeData(Time.deltaTime));
+    }
+
     void FixedUpdate()
     {
         float laserLength = 50f;
-        Vector2 startPosition = (Vector2)transform.position + new Vector2(-0.5f, 0.2f);
+        Vector2 startPosition = (Vector2)transform.position + new Vector2(-1f, 0f);
         int layerMask = LayerMask.GetMask("Default");
 
         RaycastHit2D hit = Physics2D.Raycast(startPosition, Vector2.right, laserLength, layerMask, 0);
