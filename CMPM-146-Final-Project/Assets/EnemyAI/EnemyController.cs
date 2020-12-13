@@ -11,7 +11,7 @@ public class EnemyController : MonoBehaviour {
     
     //////////////////////////// ENEMY MOVEMENT PARAMETERS ////////////////////////////
 	
-    private float EnemySpeed = 10f;
+    private float EnemySpeed = 1f;
     public Transform movePoint;
     public Collider2D enemyColl;
     private float saveHoriz = 0f;
@@ -21,6 +21,7 @@ public class EnemyController : MonoBehaviour {
 	public bool rightBlock = false;
 	public bool downBlock = false; 
     public bool isMoving = false;
+    private Vector3 lastPosition;
 
     //////////////////////////// FUNCTIONS ////////////////////////////
     void Start() {
@@ -35,6 +36,13 @@ public class EnemyController : MonoBehaviour {
                 return BehaviourTreeStatus.Failure;
             })
 			.Do("action1",  t => 
+			{
+				// Action 1.
+                RandMove();
+                return BehaviourTreeStatus.Success;
+			})
+            /* NON-RANDOM MOVEMENT, REQUIRES OnTriggerEnter to be edited to include saveHoriz, saveVert, and all bool block variables
+            .Do("action1",  t => 
 			{
 				// Action 1.
                 Debug.Log("Moving Up");
@@ -82,7 +90,10 @@ public class EnemyController : MonoBehaviour {
                     MoveLeft();
                     return BehaviourTreeStatus.Success;
                 }
+                RandMove();
+                return BehaviourTreeStatus.Success;
 			})
+            */
 		.End()
 		.Build();
     }
@@ -94,48 +105,40 @@ public class EnemyController : MonoBehaviour {
     void RandMove() {
         int move = UnityEngine.Random.Range(0, 4); // RANDOM NUMBER BETWEEN 0 - 3, since 4 is (exclusive) in the random range
         if (move == 0) { //Moving up
-            if (upBlock == true) {
-                RandMove();
-            }
             transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
             if (isMoving != true)
             { // If not moving, allow movement
+                lastPosition = movePoint.position;
                 movePoint.position += new Vector3(0f, 1.6f, 0f);
                 saveHoriz = 0f;
                 saveVert = -1.6f;
             }
         }
         if (move == 1) { //Moving Right
-            if (rightBlock == true) {
-                RandMove();
-            }
             transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
             if (isMoving != true)
             { // If not moving, allow movement
+                lastPosition = movePoint.position;
                 movePoint.position += new Vector3(1.6f, 0f, 0f);
                 saveHoriz = -1.6f;
                 saveVert = 0f;
             }
         }
         if (move == 2) { //Moving Down
-            if (downBlock == true) {
-                RandMove();
-            }
             transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
             if (isMoving != true)
             { // If not moving, allow movement
+                lastPosition = movePoint.position;
                 movePoint.position += new Vector3(0f, -1.6f, 0f);
                 saveHoriz = 0f;
                 saveVert = 1.6f;
             }
         }
         if (move == 3) { //Moving Left
-            if (leftBlock == true) {
-                RandMove();
-            }
             transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
             if (isMoving != true)
             { // If not moving, allow movement
+                lastPosition = movePoint.position;
                 movePoint.position += new Vector3(-1.6f, 0f, 0f);
                 saveHoriz = 1.6f;
                 saveVert = 0f;
@@ -191,19 +194,7 @@ public class EnemyController : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D enemyColl) {
         if (enemyColl.gameObject.name == "Wall(Clone)" || enemyColl.gameObject.name == "Enemy(Clone)") {
-            movePoint.position += new Vector3(saveHoriz, saveVert, 0f);
-            if (saveHoriz == 0f && saveVert == -1.6f) {
-                upBlock = true;
-            }
-            else if (saveHoriz == 0f && saveVert == 1.6f){
-                downBlock = true; 
-            }
-            else if (saveHoriz == 1.6f && saveVert == 0f){
-                leftBlock = true;
-            }
-            else if (saveHoriz == -1.6f && saveVert == 0f){
-                rightBlock = true;
-            }
+            movePoint.position = lastPosition;
         }
     }
 
