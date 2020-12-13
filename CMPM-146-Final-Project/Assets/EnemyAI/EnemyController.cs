@@ -9,11 +9,16 @@ public class EnemyController : MonoBehaviour {
     public IBehaviourTreeNode tree;
     
     //////////////////////////// ENEMY MOVEMENT PARAMETERS ////////////////////////////
+	
     private float EnemySpeed = 3f;
     public Transform movePoint;
     public Collider2D enemyColl;
     private float saveHoriz = 0f;
     private float saveVert = 0f;
+	public bool upBlock = false;
+	public bool leftBlock = false;
+	public bool rightBlock = false;
+	public bool downBlock = false; 
 
     //////////////////////////// FUNCTIONS ////////////////////////////
     void Start() {
@@ -25,8 +30,8 @@ public class EnemyController : MonoBehaviour {
 			.Do("action1",  t => 
 			{
 				// Action 1.
-                Debug.Log("Hello");
-				return BehaviourTreeStatus.Failure;
+                MoveLeft();
+				return BehaviourTreeStatus.Success;
 			})
 			.Do("action2", t => 
 			{
@@ -40,6 +45,7 @@ public class EnemyController : MonoBehaviour {
                 Debug.Log("World");
 				return BehaviourTreeStatus.Success;
 			})
+			.Condition()
 		.End()
 		.Build();
     }
@@ -52,9 +58,17 @@ public class EnemyController : MonoBehaviour {
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
 
         movePoint.position += new Vector3(0f, 1.6f, 0f);
-        saveHoriz = 0;
+        saveHoriz = 0f;
         saveVert = -1.6f;
     }
+
+	void MoveLeft(){
+		transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
+
+        movePoint.position += new Vector3(-1.6f, 0f, 0f);
+        saveHoriz = 1.6f;
+        saveVert = 0f;
+	}
 
     void OnTriggerEnter2D(Collider2D enemyColl) {
         if (enemyColl.gameObject.name == "Wall(Clone)") {
