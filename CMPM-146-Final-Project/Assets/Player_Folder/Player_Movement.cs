@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,9 +16,19 @@ public class Player_Movement : MonoBehaviour
 
     void Update()
     {
-
+         
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
 
+        if (Input.GetKey(KeyCode.LeftShift)) {
+              moveSpeed = 2f;
+              Debug.Log("Hello!");
+              Debug.Log(moveSpeed);
+          }
+          else {
+              moveSpeed = 5f;
+              Debug.Log(moveSpeed);
+          }
+          
         if (Vector3.Distance(transform.position, movePoint.position) <= .05f) {
             if (Input.GetAxisRaw("Horizontal") == 1f) {
                 movePoint.position += new Vector3(Input.GetAxisRaw("Horizontal") + .6f, 0f, 0f);
