@@ -14,6 +14,17 @@ public class Pathfind : MonoBehaviour
     void Start()
     {
         Invoke("FindUsb", 0.001f);
+        /*
+        var walls = Invoke("getWalls", 0.002f);
+        Dictionary<GameObject, List<float>> wallMaster = new Dictionary<GameObject, List<float>>(); 
+        foreach (GameObject w in walls){
+            wallMaster[w] = new List<float>{ w.transform.position.x, w.transform.position.y };
+        }
+
+        foreach (KeyValuePair<GameObject, List<float>> kvp in wallMaster){
+            Debug.Log("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
+        }
+        */
     }
 
     private void FindUsb(){
@@ -24,6 +35,10 @@ public class Pathfind : MonoBehaviour
         else{
             Debug.Log("Key NOT FOUND");
         }
+    }
+
+    private GameObject[] getWalls(){
+        return GameObject.FindGameObjectsWithTag("Wall(Clone)");
     }
 
 //getDistance()
@@ -57,10 +72,6 @@ public class Pathfind : MonoBehaviour
         return adjList;
     }
 
-
-    
-
-
     void Update(){
         /*
         var x = getAdjacentMoves(player);
@@ -69,5 +80,5 @@ public class Pathfind : MonoBehaviour
             Debug.Log("Adjacent y coord: " + i[1]);
             */
         }
-    }
+}
 

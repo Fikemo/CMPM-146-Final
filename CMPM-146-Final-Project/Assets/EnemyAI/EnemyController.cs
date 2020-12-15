@@ -184,7 +184,7 @@ public class EnemyController : MonoBehaviour {
 
     void checkPosition() {
         if (transform.position == movePoint.position) {
-            Debug.Log("Point and Enemy are at same Position");
+            //Debug.Log("Point and Enemy are at same Position");
             isMoving = false;
         }
         else if (transform.position != movePoint.position) {
@@ -200,7 +200,7 @@ public class EnemyController : MonoBehaviour {
 
     void FixedUpdate() {
         float laserLength = 50f;
-        Vector2 startPosition = (Vector2)transform.position + new Vector2(0f, -1.6f);
+        Vector2 startPosition = (Vector2)transform.position + new Vector2(0f, 0.5f);
         int layerMask = LayerMask.GetMask("Default");
 
         RaycastHit2D hit = Physics2D.Raycast(startPosition, Vector2.right, laserLength, layerMask, 0);
@@ -213,7 +213,7 @@ public class EnemyController : MonoBehaviour {
                 Application.LoadLevel(Application.loadedLevel);
             }
         }
-        //Debug.DrawRay(startPosition, Vector2.right * laserLength, Color.red);
+        Debug.DrawRay(startPosition, Vector2.right * 3f, Color.red);
     }
 
     //KNOWN BUGS:
