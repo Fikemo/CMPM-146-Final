@@ -9,7 +9,7 @@ public class EnemyController : MonoBehaviour {
 
 
     //////////////////////////// ENEMY SPRITE PARAMETERS ////////////////////////////
-    private Animation enemyMovement;
+    public Animator animator;
 
     //////////////////////////// BEHAVIOR TREE PARAMETERS ////////////////////////////
     public IBehaviourTreeNode tree;
@@ -27,10 +27,10 @@ public class EnemyController : MonoBehaviour {
 	public bool downBlock = false; 
     public bool isMoving = false;
     private Vector3 lastPosition;
+    int moveBack = 0;
 
     //////////////////////////// FUNCTIONS ////////////////////////////
     void Start() {
-        enemyMovement = GetComponent<Animation>();
         movePoint.parent = null;
 
         var builder = new BehaviourTreeBuilder();
@@ -114,11 +114,9 @@ public class EnemyController : MonoBehaviour {
             transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
             if (isMoving != true)
             { // If not moving, allow movement
-                if (!enemyMovement.IsPlaying("Enemy_Up"))
-                {
-                    Debug.Log("Up");
-                    enemyMovement.Play("Enemy_Up");
-                }
+                ResetTrigger();
+                animator.SetTrigger("NorthWalk");
+                moveBack = 0;
                 lastPosition = movePoint.position;
                 movePoint.position += new Vector3(0f, 1.6f, 0f);
                 saveHoriz = 0f;
@@ -129,11 +127,9 @@ public class EnemyController : MonoBehaviour {
             transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
             if (isMoving != true)
             { // If not moving, allow movement
-                if (!enemyMovement.IsPlaying("Enemy_Right"))
-                {
-                    Debug.Log("Right");
-                    enemyMovement.Play("Enemy_Right");
-                }
+                ResetTrigger();
+                animator.SetTrigger("EastWalk");
+                moveBack = 1;
                 lastPosition = movePoint.position;
                 movePoint.position += new Vector3(1.6f, 0f, 0f);
                 saveHoriz = -1.6f;
@@ -144,11 +140,9 @@ public class EnemyController : MonoBehaviour {
             transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
             if (isMoving != true)
             { // If not moving, allow movement
-                if (!enemyMovement.IsPlaying("Enemy_Down"))
-                {
-                    Debug.Log("Down");
-                    enemyMovement.Play("Enemy_Down");
-                }
+                ResetTrigger();
+                animator.SetTrigger("SouthWalk");
+                moveBack = 2;
                 lastPosition = movePoint.position;
                 movePoint.position += new Vector3(0f, -1.6f, 0f);
                 saveHoriz = 0f;
@@ -159,11 +153,9 @@ public class EnemyController : MonoBehaviour {
             transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
             if (isMoving != true)
             { // If not moving, allow movement
-                if (!enemyMovement.IsPlaying("Enemy_Left"))
-                {
-                    Debug.Log("Left");
-                    enemyMovement.Play("Enemy_Left");
-                }
+                ResetTrigger();
+                animator.SetTrigger("WestWalk");
+                moveBack = 3;
                 lastPosition = movePoint.position;
                 movePoint.position += new Vector3(-1.6f, 0f, 0f);
                 saveHoriz = 1.6f;
@@ -220,8 +212,28 @@ public class EnemyController : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D enemyColl) {
         if (enemyColl.gameObject.name == "Wall(Clone)" || enemyColl.gameObject.name == "Enemy(Clone)") {
+            ResetTrigger();
+            if (moveBack == 0) {
+                animator.SetTrigger("SouthWalk");
+            }
+            else if (moveBack == 1) {
+                animator.SetTrigger("WestWalk");
+            }
+            else if (moveBack == 2) {
+                animator.SetTrigger("NorthWalk");
+            }
+            else if (moveBack == 3) {
+                animator.SetTrigger("EastWalk");
+            }
             movePoint.position = lastPosition;
         }
+    }
+
+    void ResetTrigger() {
+        animator.ResetTrigger("NorthWalk");
+        animator.ResetTrigger("EastWalk");
+        animator.ResetTrigger("SouthWalk");
+        animator.ResetTrigger("WestWalk");
     }
 
     void FixedUpdate() {
