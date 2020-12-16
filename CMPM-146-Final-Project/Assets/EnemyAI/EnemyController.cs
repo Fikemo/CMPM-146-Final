@@ -238,6 +238,18 @@ public class EnemyController : MonoBehaviour {
 
     void FixedUpdate() {
         float laserLength = 50f;
+        if (moveBack == 0) {
+            animator.SetTrigger("SouthWalk");
+        }
+        else if (moveBack == 1) {
+            animator.SetTrigger("WestWalk");
+        }
+        else if (moveBack == 2) {
+            animator.SetTrigger("NorthWalk");
+        }
+        else if (moveBack == 3) {
+            animator.SetTrigger("EastWalk");
+        }
         Vector2 startPosition = (Vector2)transform.position + new Vector2(0f, 0.5f);
         int layerMask = LayerMask.GetMask("Default");
 
@@ -251,12 +263,7 @@ public class EnemyController : MonoBehaviour {
                 Application.LoadLevel(Application.loadedLevel);
             }
         }
-        Debug.DrawRay(startPosition, Vector2.right * 3f, Color.red);
+        Debug.DrawRay(startPosition, Vector2.right * 3f, Color.blue);
     }
-
-    //KNOWN BUGS:
-    // Hitbox doesn't account for walls at the moment. 
-    // Will probably need two separate hitboxes; one for sound, one for direct line of vision.
-    // Smart movement still needs to be implemented for the guards
 }
 
