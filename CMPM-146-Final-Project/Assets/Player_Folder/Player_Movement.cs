@@ -21,12 +21,9 @@ public class Player_Movement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.LeftShift)) {
               moveSpeed = 2f;
-              Debug.Log("Hello!");
-              Debug.Log(moveSpeed);
           }
           else {
               moveSpeed = 5f;
-              Debug.Log(moveSpeed);
           }
           
         if (Vector3.Distance(transform.position, movePoint.position) <= .05f) {
