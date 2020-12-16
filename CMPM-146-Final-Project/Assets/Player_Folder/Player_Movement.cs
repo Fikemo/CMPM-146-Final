@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player_Movement : MonoBehaviour
 {
@@ -65,6 +66,12 @@ public class Player_Movement : MonoBehaviour
     void OnTriggerEnter2D(Collider2D coll) {
         if (coll.gameObject.name == "Wall(Clone)") {
             movePoint.position += new Vector3(saveHoriz, saveVert, 0f);
+        }
+        if (coll.gameObject.name == "Enemy(Clone)") {
+            SceneManager.LoadScene("DeathScene");
+        }
+        if (coll.gameObject.name == "Exit(Clone)" && USBPickUp.haveUsb) {
+            SceneManager.LoadScene("EndScene");
         }
     }
 }
