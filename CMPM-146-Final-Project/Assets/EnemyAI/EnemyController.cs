@@ -254,4 +254,3 @@ public class EnemyController : MonoBehaviour {
         Debug.DrawRay(startPosition, Vector2.right * 3f, Color.blue);
     }
 }
-
