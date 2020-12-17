@@ -257,7 +257,7 @@ public class EnemyController : MonoBehaviour {
     }
 
     void FixedUpdate() {
-        float laserLength = 4f;
+        float laserLength = 4f; // LENGTH OF THE LINE ITSELF
         Vector2 startPosition = (Vector2)transform.position + new Vector2(0f, 0.5f);
         int layerMask = LayerMask.GetMask("Default");
 
