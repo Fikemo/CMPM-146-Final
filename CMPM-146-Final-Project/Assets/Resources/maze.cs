@@ -17,21 +17,23 @@ public class maze : MonoBehaviour
     void Start()
     {
         // int size = Random.Range(8, 15);
-        // int levelNumber = Random.Range(0, 100);
+        // int mazeNumber = Random.Range(0, 100);
         int origSize = 14;
+        int mazeNumber = 0;
         int size = origSize * 2 + 2;
         Debug.Log(size);
 
         // TextAsset t1 = (TextAsset)Resources.Load("Size" + size.ToString() + "/Maze" + levelNumber.ToString(), typeof(TextAsset));
         // TextAsset t1 = (TextAsset)Resources.Load("level", typeof(TextAsset));
-        TextAsset t1 = (TextAsset)Resources.Load("Size14/Maze0", typeof(TextAsset));
+        TextAsset t1 = (TextAsset)Resources.Load("Size" + origSize.ToString() + "/Maze" + mazeNumber.ToString(), typeof(TextAsset));
 
         string s = t1.text;
 
         int i, j, k = 0;
         // Debug.Log(s.Length);
         // s = s.Replace("\n", "");
-        // Debug.Log(s.Length);
+        Debug.Log(s);
+        Debug.Log(s.Length);
         mazeArray = new char[size, size];
         for (i = 0; i < size; i++)
         {
