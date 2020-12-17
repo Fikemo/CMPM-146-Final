@@ -231,18 +231,22 @@ public class EnemyController : MonoBehaviour {
             ResetTrigger();
             if (moveBack == 0) {
                 animator.SetTrigger("SouthWalk");
+                moveBack = 2;
                 anglePosition = new Vector2(0f, -1f);
             }
             else if (moveBack == 1) {
                 animator.SetTrigger("WestWalk");
+                moveBack = 3;
                 anglePosition = new Vector2(-1f, 0f);
             }
             else if (moveBack == 2) {
                 animator.SetTrigger("NorthWalk");
+                moveBack = 0;
                 anglePosition = new Vector2(0f, 1f);
             }
             else if (moveBack == 3) {
                 animator.SetTrigger("EastWalk");
+                moveBack = 1;
                 anglePosition = new Vector2(1f, 0f);
             }
             movePoint.position = lastPosition;
