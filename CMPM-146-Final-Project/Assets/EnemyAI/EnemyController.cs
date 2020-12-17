@@ -149,7 +149,7 @@ public class EnemyController : MonoBehaviour {
 
         if (castingHit.collider != null)
         {
-            if (castingHit.collider.tag == "Wall(Clone)")
+            if (castingHit.collider.tag == "Wall")
             {
                 Debug.Log("Hitting Wall: " + direction);
                 return false;
@@ -160,24 +160,32 @@ public class EnemyController : MonoBehaviour {
     }
 
     void MoveUp() {
+        ResetTrigger();
+        animator.SetTrigger("NorthWalk");
         movePoint.position += new Vector3(0f, 1.6f, 0f);
         saveHoriz = 0f;
         saveVert = -1.6f;
     }
 
     void MoveLeft() {
+        ResetTrigger();
+        animator.SetTrigger("WestWalk");
         movePoint.position += new Vector3(-1.6f, 0f, 0f);
         saveHoriz = 1.6f;
         saveVert = 0f;
     }
 
     void MoveRight() {
+        ResetTrigger();
+        animator.SetTrigger("EastWalk");
         movePoint.position += new Vector3(1.6f, 0f, 0f);
         saveHoriz = -1.6f;
         saveVert = 0f;
     }
 
     void MoveDown() {
+        ResetTrigger();
+        animator.SetTrigger("SouthWalk");
         movePoint.position += new Vector3(0f, -1.6f, 0f);
         saveHoriz = 0f;
         saveVert = 1.6f;
@@ -309,7 +317,7 @@ public class EnemyController : MonoBehaviour {
         {
             if (hit.collider.tag == "Player")
             {
-                Debug.Log("Hitting the Player");
+                //Debug.Log("Hitting the Player");
                 playerFOUND = true; // SET TO TRUE NOW THAT PLAYER HAS BEEN SEEN
                 // WE NEED A POINT TO RESET BACK TO FALSE SO THAT WAY THEY STOP TRACKING THE PLAYER, OR MAYBE WE JSUT ALWAYS HAVE THEM TRACK THE PLAYER
             }
