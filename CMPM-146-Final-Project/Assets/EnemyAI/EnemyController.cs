@@ -44,6 +44,14 @@ public class EnemyController : MonoBehaviour {
         var builder = new BehaviourTreeBuilder();
         this.tree = builder
 		.Selector("my-sequence")
+            .Do("PlayerFound", t => 
+            {
+                if (playerFOUND == true) {
+                    return BehaviourTreeStatus.Success; // IN HERE IS WHERE WE SHOULD IMPLEMENT THE TRACK PLAYER FUNCTIOn
+                }
+
+                return BehaviourTreeStatus.Failure;
+            })
             .Do("AllowEnemyMovement", t => 
             {
                 checkPosition();
