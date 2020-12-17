@@ -31,11 +31,12 @@ public class EnemyController : MonoBehaviour {
 
     //////////////////////////// ENEMY DETECTION PARAMETERS ////////////////////////////
     Vector2 anglePosition;
+    Vector2 castingPosition;
 
     bool playerFOUND = false; 
-    bool playerNotFound = true;
-    /* SET THESE TWO VARIABLES ABOVE TO TRUE OR FALSE IF PLAYER IS FOUND WITHIN THE RAYCAST, IF SO THEN THE
-    BEHAVIOR TREE SHOULD THEN SWITCH INTO TRACKING STATE */
+    
+    public GameObject playerPosition;
+
 
     //////////////////////////// FUNCTIONS ////////////////////////////
     void Start() {
@@ -47,75 +48,19 @@ public class EnemyController : MonoBehaviour {
             .Do("PlayerFound", t => 
             {
                 if (playerFOUND == true) {
+                    checkPosition();
+                    moveTowards();
                     return BehaviourTreeStatus.Success; // IN HERE IS WHERE WE SHOULD IMPLEMENT THE TRACK PLAYER FUNCTIOn
                 }
-
-                return BehaviourTreeStatus.Failure;
-            })
-            .Do("AllowEnemyMovement", t => 
-            {
-                checkPosition();
                 return BehaviourTreeStatus.Failure;
             })
 			.Do("action1",  t => 
 			{
 				// Action 1.
+                checkPosition();
                 RandMove();
                 return BehaviourTreeStatus.Success;
 			})
-            /* NON-RANDOM MOVEMENT, REQUIRES OnTriggerEnter to be edited to include saveHoriz, saveVert, and all bool block variables
-            .Do("action1",  t => 
-			{
-				// Action 1.
-                Debug.Log("Moving Up");
-                if (upBlock == true) {
-                    return BehaviourTreeStatus.Failure;
-                }
-                else {
-                    MoveUp();
-                    return BehaviourTreeStatus.Success;
-                }
-			})
-			.Do("action2", t => 
-			{
-                // Action 2.
-                if (rightBlock == true) {
-                    return BehaviourTreeStatus.Failure;
-                }
-                else {
-                    MoveRight();
-                    return BehaviourTreeStatus.Success;
-                }
-			})
-            .Do("action3", t => 
-			{
-				// Action 2.
-                if (downBlock == true) {
-                    return BehaviourTreeStatus.Failure;
-                }
-                else {
-                    MoveDown();
-                    return BehaviourTreeStatus.Success;
-                }
-			})
-            .Do("action4", t => 
-			{
-				// Action 2.
-                if (leftBlock == true) {
-                    upBlock = false;
-                    rightBlock = false;
-                    downBlock = false;
-                    leftBlock = false;
-                    return BehaviourTreeStatus.Failure;
-                }
-                else {
-                    MoveLeft();
-                    return BehaviourTreeStatus.Success;
-                }
-                RandMove();
-                return BehaviourTreeStatus.Success;
-			})
-            */
 		.End()
 		.Build();
     }
@@ -123,6 +68,122 @@ public class EnemyController : MonoBehaviour {
     void Update() {
         this.tree.Tick(new TimeData(Time.deltaTime));
     }
+
+/////////////////////////////////////////////////// ENEMY DETECTION SECTION /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    void moveTowards() {
+        transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
+
+        if (isMoving != true) {
+            float startingDistance = getDistance(gameObject.transform.position.x, gameObject.transform.position.y, playerPosition.transform.position.x, playerPosition.transform.position.y);
+            float upDistance;
+            float rightDistance;
+            float downDistance;
+            float leftDistance;
+
+            if (free("Up") == true) {
+                upDistance = getDistance(gameObject.transform.position.x, gameObject.transform.position.y + 1.6f, playerPosition.transform.position.x, playerPosition.transform.position.y);
+            }
+            else upDistance = 100000000; 
+
+            if (free("Right") == true) {
+                rightDistance = getDistance(gameObject.transform.position.x + 1.6f, gameObject.transform.position.y, playerPosition.transform.position.x, playerPosition.transform.position.y);
+            }
+            else rightDistance = 100000000;
+
+            if (free("Down") == true) {
+                downDistance = getDistance(gameObject.transform.position.x, gameObject.transform.position.y - 1.6f, playerPosition.transform.position.x, playerPosition.transform.position.y);
+            }
+            else downDistance = 100000000;
+
+            if (free("Left") == true) {
+                leftDistance = getDistance(gameObject.transform.position.x - 1.6f, gameObject.transform.position.y, playerPosition.transform.position.x, playerPosition.transform.position.y);
+            }
+            else leftDistance = 100000000;
+
+            float lowestDistance = Mathf.Min(upDistance, rightDistance, downDistance, leftDistance);
+
+            if (lowestDistance == upDistance) {
+                Debug.Log("Moving UP");
+                MoveUp();
+            }
+            else if (lowestDistance == rightDistance) {
+                Debug.Log("Moving Right");
+                MoveRight();
+            }
+            else if (lowestDistance == downDistance) {
+                Debug.Log("Moving Down");
+                MoveDown();
+            }
+            else if (lowestDistance == leftDistance) {
+                Debug.Log("Moving Left");
+                MoveLeft();
+            }
+        }
+    }
+
+    float getDistance(float x1, float y1, float x2, float y2) {
+        Vector2 v1 = new Vector2(x1, y1);
+        Vector2 v2 = new Vector2(x2, y2);
+        return Vector2.Distance(v1,v2);
+    }
+
+    bool free(string direction) {
+        float rayLength = 2f; // LENGTH OF THE LINE ITSELF
+        Vector2 rayPosition = (Vector2)transform.position + new Vector2(0f, 0.5f);
+        if (direction == "Up") {
+            castingPosition = new Vector2(0f, 1f);
+        }
+        if (direction == "Right") {
+            castingPosition = new Vector2(1f, 0f);
+        }
+        if (direction == "Down") {
+            castingPosition = new Vector2(0f, -1f);
+        }
+        if (direction == "Left") {
+            castingPosition = new Vector2(-1f, 0f);
+        }
+
+        int layerMask = LayerMask.GetMask("Default");
+
+        RaycastHit2D castingHit = Physics2D.Raycast(rayPosition, castingPosition, rayLength, layerMask, 0);
+
+        if (castingHit.collider != null)
+        {
+            if (castingHit.collider.tag == "Wall(Clone)")
+            {
+                Debug.Log("Hitting Wall: " + direction);
+                return false;
+            }
+        }
+        Debug.DrawRay(rayPosition, castingPosition * 2f, Color.blue, 0.01f);
+        return true;
+    }
+
+    void MoveUp() {
+        movePoint.position += new Vector3(0f, 1.6f, 0f);
+        saveHoriz = 0f;
+        saveVert = -1.6f;
+    }
+
+    void MoveLeft() {
+        movePoint.position += new Vector3(-1.6f, 0f, 0f);
+        saveHoriz = 1.6f;
+        saveVert = 0f;
+    }
+
+    void MoveRight() {
+        movePoint.position += new Vector3(1.6f, 0f, 0f);
+        saveHoriz = -1.6f;
+        saveVert = 0f;
+    }
+
+    void MoveDown() {
+        movePoint.position += new Vector3(0f, -1.6f, 0f);
+        saveHoriz = 0f;
+        saveVert = 1.6f;
+    }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     void RandMove() {
         int move = UnityEngine.Random.Range(0, 4); // RANDOM NUMBER BETWEEN 0 - 3, since 4 is (exclusive) in the random range
@@ -179,42 +240,6 @@ public class EnemyController : MonoBehaviour {
             }
         }
     }
-
-    void MoveUp() {
-        transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
-        if (isMoving != true) { // If not moving, allow movement
-            movePoint.position += new Vector3(0f, 1.6f, 0f);
-            saveHoriz = 0f;
-            saveVert = -1.6f;
-        }
-    }
-
-	void MoveLeft(){
-        transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
-        if (isMoving != true) { // If not moving, allow movement
-            movePoint.position += new Vector3(-1.6f, 0f, 0f);
-            saveHoriz = 1.6f;
-            saveVert = 0f;
-        }
-	}
-
-    void MoveRight() {
-        transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
-        if (isMoving != true) { // If not moving, allow movement
-            movePoint.position += new Vector3(1.6f, 0f, 0f);
-            saveHoriz = -1.6f;
-            saveVert = 0f;
-        }
-    }
-
-	void MoveDown() {
-        transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
-        if (isMoving != true) { // If not moving, allow movement
-            movePoint.position += new Vector3(0f, -1.6f, 0f);
-            saveHoriz = 0f;
-            saveVert = 1.6f;
-        }
-	}
 
     void checkPosition() {
         if (transform.position == movePoint.position) {

@@ -21,7 +21,6 @@ public class maze : MonoBehaviour
         int origSize = 14;
         int mazeNumber = 0;
         int size = origSize * 2 + 2;
-        Debug.Log(size);
 
         // TextAsset t1 = (TextAsset)Resources.Load("Size" + size.ToString() + "/Maze" + levelNumber.ToString(), typeof(TextAsset));
         // TextAsset t1 = (TextAsset)Resources.Load("level", typeof(TextAsset));
@@ -32,8 +31,6 @@ public class maze : MonoBehaviour
         int i, j, k = 0;
         // Debug.Log(s.Length);
         // s = s.Replace("\n", "");
-        Debug.Log(s);
-        Debug.Log(s.Length);
         mazeArray = new char[size, size];
         for (i = 0; i < size; i++)
         {
@@ -62,7 +59,6 @@ public class maze : MonoBehaviour
             }
             debugArrayString += "\n";
         }
-        Debug.Log(debugArrayString);
 
         char[,] reducedMaze = new char[origSize, origSize];
         for (i = 0; i < origSize; i ++)
@@ -84,8 +80,6 @@ public class maze : MonoBehaviour
             }
             debugReducedArrayString += "\n";
         }
-        Debug.Log(debugReducedArrayString);
-
 
         for (i = 0; i < size; i++)
         {
