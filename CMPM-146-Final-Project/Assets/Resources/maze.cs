@@ -29,14 +29,21 @@ public class maze : MonoBehaviour
         string s = t1.text;
 
         int i, j, k = 0;
-
-        s = s.Replace("\n", "");
+        // Debug.Log(s.Length);
+        // s = s.Replace("\n", "");
+        // Debug.Log(s.Length);
         mazeArray = new char[size, size];
         for (i = 0; i < size; i++)
         {
             for(j = 0; j < size; j++)
             {
-                mazeArray[i, j] = s[k];
+                if (s[k] != '\n')
+                {
+                    mazeArray[i, j] = s[k];
+                } else
+                {
+                    j--;
+                }
                 k++;
             }
         }
