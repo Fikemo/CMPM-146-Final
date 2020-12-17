@@ -37,13 +37,11 @@ public class maze : MonoBehaviour
         {
             for(j = 0; j < size; j++)
             {
-                if (s[k] != '\n')
+                if (s[k] == '\n')
                 {
-                    mazeArray[i, j] = s[k];
-                } else
-                {
-                    j--;
+                    k++;
                 }
+                mazeArray[i, j] = s[k];
                 k++;
             }
         }
