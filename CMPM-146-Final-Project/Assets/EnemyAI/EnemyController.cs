@@ -44,6 +44,14 @@ public class EnemyController : MonoBehaviour {
         var builder = new BehaviourTreeBuilder();
         this.tree = builder
 		.Selector("my-sequence")
+            .Do("PlayerFound", t => 
+            {
+                if (playerFOUND == true) {
+                    return BehaviourTreeStatus.Success; // IN HERE IS WHERE WE SHOULD IMPLEMENT THE TRACK PLAYER FUNCTIOn
+                }
+
+                return BehaviourTreeStatus.Failure;
+            })
             .Do("AllowEnemyMovement", t => 
             {
                 checkPosition();
@@ -223,18 +231,22 @@ public class EnemyController : MonoBehaviour {
             ResetTrigger();
             if (moveBack == 0) {
                 animator.SetTrigger("SouthWalk");
+                moveBack = 2;
                 anglePosition = new Vector2(0f, -1f);
             }
             else if (moveBack == 1) {
                 animator.SetTrigger("WestWalk");
+                moveBack = 3;
                 anglePosition = new Vector2(-1f, 0f);
             }
             else if (moveBack == 2) {
                 animator.SetTrigger("NorthWalk");
+                moveBack = 0;
                 anglePosition = new Vector2(0f, 1f);
             }
             else if (moveBack == 3) {
                 animator.SetTrigger("EastWalk");
+                moveBack = 1;
                 anglePosition = new Vector2(1f, 0f);
             }
             movePoint.position = lastPosition;
@@ -249,7 +261,7 @@ public class EnemyController : MonoBehaviour {
     }
 
     void FixedUpdate() {
-        float laserLength = 3f;
+        float laserLength = 4f; // LENGTH OF THE LINE ITSELF
         Vector2 startPosition = (Vector2)transform.position + new Vector2(0f, 0.5f);
         int layerMask = LayerMask.GetMask("Default");
 
