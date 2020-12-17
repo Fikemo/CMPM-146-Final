@@ -1,5 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using JetBrains.Annotations;
+using System;
+using System.Diagnostics.Tracing;
 using UnityEngine;
 
 public class maze : MonoBehaviour
@@ -10,58 +11,103 @@ public class maze : MonoBehaviour
     public GameObject key;
     public GameObject computer;
 	public GameObject exit;
+    public char[,] mazeArray;
+    public char[,] reducedMazeArray;
     // Start is called before the first frame update
     void Start()
     {
-        TextAsset t1 = (TextAsset)Resources.Load("level", typeof(TextAsset));
+        // int size = Random.Range(8, 15);
+        // int levelNumber = Random.Range(0, 100);
+        int origSize = 14;
+        int size = origSize * 2 + 2;
+        Debug.Log(size);
+
+        // TextAsset t1 = (TextAsset)Resources.Load("Size" + size.ToString() + "/Maze" + levelNumber.ToString(), typeof(TextAsset));
+        // TextAsset t1 = (TextAsset)Resources.Load("level", typeof(TextAsset));
+        TextAsset t1 = (TextAsset)Resources.Load("Size14/Maze0", typeof(TextAsset));
+
         string s = t1.text;
 
-        int i, columnCounter = 0, columns = 0;
-        float rows = 0f, columnTracking = 0f;
-        
-        for (i = 0; i < s.Length; i++) {
-            if (s[i] == '\n') {
-                break;
+        int i, j, k = 0;
+
+        s = s.Replace("\n", "");
+        mazeArray = new char[size, size];
+        for (i = 0; i < size; i++)
+        {
+            for(j = 0; j < size; j++)
+            {
+                mazeArray[i, j] = s[k];
+                k++;
             }
-            columns++;
+        }
+        Debug.Log(mazeArray);
+        string debugArrayString = "";
+        for (i = 0; i < size; i++)
+        {
+            for (j = 0; j < size; j++)
+            {
+                debugArrayString += mazeArray[i, j];
+            }
+            debugArrayString += "\n";
+        }
+        Debug.Log(debugArrayString);
+
+        char[,] reducedMaze = new char[origSize, origSize];
+        for (i = 0; i < origSize; i ++)
+        {
+            int iScaled = (i * 2) + 2;
+            for (j = 0; j < origSize; j ++)
+            {
+                int jScaled = (j * 2) + 2;
+                reducedMaze[i, j] = mazeArray[iScaled, jScaled];
+            }
         }
 
-        s = s.Replace("\n","");
+        string debugReducedArrayString = "";
+        for (i = 0; i < origSize; i++)
+        {
+            for (j = 0; j < origSize; j++)
+            {
+                debugReducedArrayString += reducedMaze[i, j];
+            }
+            debugReducedArrayString += "\n";
+        }
+        Debug.Log(debugReducedArrayString);
 
-        for (i = 0; i < s.Length; i++) {
-            if (columnCounter == columns) {
-                rows = rows - 1.6f;
-                columnTracking = 0f;
-                columnCounter = 0;
-            }
-            if (s[i] == '0') {
+
+        for (i = 0; i < size; i++)
+        {
+            for (j = 0; j < size; j++)
+            {
+                float row = -i * 1.6f;
+                float column = j * 1.6f;
                 GameObject t;
-                t = (GameObject)(Instantiate(floor, new Vector2(columnTracking, rows), Quaternion.identity));
+                switch (mazeArray[i, j])
+                {
+                    case '0':
+                        t = (GameObject)(Instantiate(floor, new Vector2(column, row), Quaternion.identity));
+                        break;
+                    case '2':
+                        t = (GameObject)(Instantiate(wall, new Vector2(column, row), Quaternion.identity));
+                        break;
+                    case '3':
+                        t = (GameObject)(Instantiate(exit, new Vector2(column, row), Quaternion.identity));
+                        break;
+                    case '4':
+                        t = (GameObject)(Instantiate(floor, new Vector2(column, row), Quaternion.identity));
+                        t = (GameObject)(Instantiate(key, new Vector2(column, row), Quaternion.identity));
+                        break;
+                    case '5':
+                        t = (GameObject)(Instantiate(computer, new Vector2(column, row), Quaternion.identity));
+                        break;
+                    case '6':
+                    case '7':
+                    case '8':
+                        t = (GameObject)(Instantiate(floor, new Vector2(column, row), Quaternion.identity));
+                        t = (GameObject)(Instantiate(enemy, new Vector2(column, row), Quaternion.identity));
+                        break;
+                }
             }
-            if (s[i] == '2') {
-                GameObject t;
-                t = (GameObject)(Instantiate(wall, new Vector2(columnTracking, rows), Quaternion.identity));
-            }
-			if (s[i] == '3') {
-                GameObject t;
-                t = (GameObject)(Instantiate(exit, new Vector2(columnTracking, rows), Quaternion.identity));
-            }
-            if (s[i] == '4') {
-                GameObject t;
-                t = (GameObject)(Instantiate(floor, new Vector2(columnTracking, rows), Quaternion.identity));
-                t = (GameObject)(Instantiate(key, new Vector2(columnTracking, rows), Quaternion.identity));
-            }
-            if (s[i] == '5') {
-                GameObject t;
-                t = (GameObject)(Instantiate(computer, new Vector2(columnTracking, rows), Quaternion.identity));
-            }
-            if (s[i] == '6' || s[i] == '7' || s[i] == '8') {
-                GameObject t;
-                t = (GameObject)(Instantiate(floor, new Vector2(columnTracking, rows), Quaternion.identity));
-                t = (GameObject)(Instantiate(enemy, new Vector2(columnTracking, rows), Quaternion.identity));
-            }
-            columnTracking = columnTracking + 1.6f;
-            columnCounter++;
         }
     }
 }
