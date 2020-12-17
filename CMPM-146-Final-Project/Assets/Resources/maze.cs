@@ -53,7 +53,6 @@ public class maze : MonoBehaviour
                 k++;
             }
         }
-        Debug.Log(mazeArray);
         string debugArrayString = "";
         for (i = 0; i < size; i++)
         {
@@ -107,7 +106,8 @@ public class maze : MonoBehaviour
                         t = (GameObject)(Instantiate(exit, new Vector2(column, row), Quaternion.identity));
                         break;
                     case '4':
-                        t = (GameObject)(Instantiate(floor, new Vector2(column, row), Quaternion.identity));
+                        //Debug.Log("USB KEY");
+                        //t = (GameObject)(Instantiate(floor, new Vector2(column, row), Quaternion.identity));
                         t = (GameObject)(Instantiate(key, new Vector2(column, row), Quaternion.identity));
                         break;
                     case '5':
