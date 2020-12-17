@@ -273,7 +273,8 @@ public class EnemyController : MonoBehaviour {
             if (hit.collider.tag == "Player")
             {
                 Debug.Log("Hitting the Player");
-                Application.LoadLevel(Application.loadedLevel);
+                playerFOUND = true; // SET TO TRUE NOW THAT PLAYER HAS BEEN SEEN
+                // WE NEED A POINT TO RESET BACK TO FALSE SO THAT WAY THEY STOP TRACKING THE PLAYER, OR MAYBE WE JSUT ALWAYS HAVE THEM TRACK THE PLAYER
             }
         }
         Debug.DrawRay(startPosition, anglePosition * 3f, Color.red);
