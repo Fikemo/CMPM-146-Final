@@ -29,6 +29,9 @@ public class EnemyController : MonoBehaviour {
     private Vector3 lastPosition;
     int moveBack = 0;
 
+    //////////////////////////// ENEMY DETECTIOn PARAMETERS ////////////////////////////
+    Vector2 anglePosition;
+
     //////////////////////////// FUNCTIONS ////////////////////////////
     void Start() {
         movePoint.parent = null;
@@ -215,15 +218,19 @@ public class EnemyController : MonoBehaviour {
             ResetTrigger();
             if (moveBack == 0) {
                 animator.SetTrigger("SouthWalk");
+                anglePosition = new Vector2(0f, -1f);
             }
             else if (moveBack == 1) {
                 animator.SetTrigger("WestWalk");
+                anglePosition = new Vector2(-1f, 0f);
             }
             else if (moveBack == 2) {
                 animator.SetTrigger("NorthWalk");
+                anglePosition = new Vector2(0f, 1f);
             }
             else if (moveBack == 3) {
                 animator.SetTrigger("EastWalk");
+                anglePosition = new Vector2(1f, 0f);
             }
             movePoint.position = lastPosition;
         }
@@ -237,11 +244,24 @@ public class EnemyController : MonoBehaviour {
     }
 
     void FixedUpdate() {
-        float laserLength = 50f;
+        float laserLength = 3f;
         Vector2 startPosition = (Vector2)transform.position + new Vector2(0f, 0.5f);
         int layerMask = LayerMask.GetMask("Default");
 
-        RaycastHit2D hit = Physics2D.Raycast(startPosition, Vector2.right, laserLength, layerMask, 0);
+        if (moveBack == 0) {
+            anglePosition = new Vector2(0f, 1f);
+        }
+        else if (moveBack == 1) {
+            anglePosition = new Vector2(1f, 0f);
+        }
+        else if (moveBack == 2) {
+            anglePosition = new Vector2(0f, -1f);
+        }
+        else if (moveBack == 3) {
+            anglePosition = new Vector2(-1f, 0f);
+        }
+
+        RaycastHit2D hit = Physics2D.Raycast(startPosition, anglePosition, laserLength, layerMask, 0);
 
         if (hit.collider != null)
         {
@@ -251,6 +271,6 @@ public class EnemyController : MonoBehaviour {
                 Application.LoadLevel(Application.loadedLevel);
             }
         }
-        Debug.DrawRay(startPosition, Vector2.right * 3f, Color.blue);
+        Debug.DrawRay(startPosition, anglePosition * 3f, Color.red);
     }
 }
