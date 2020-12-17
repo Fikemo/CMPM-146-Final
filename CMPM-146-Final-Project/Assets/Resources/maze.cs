@@ -39,10 +39,16 @@ public class maze : MonoBehaviour
         {
             for(j = 0; j < size; j++)
             {
-                if (s[k] == '\n')
+                /*if (s[k] == '\n')
+                {
+                    k++;
+                }*/
+
+                while(k < s.Length && s[k] != '0' && s[k] != '2' && s[k] != '3' && s[k] != '4' && s[k] != '5' && s[k] != '6' && s[k] != '7' && s[k] != '8')
                 {
                     k++;
                 }
+
                 mazeArray[i, j] = s[k];
                 k++;
             }
