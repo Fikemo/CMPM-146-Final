@@ -29,8 +29,13 @@ public class EnemyController : MonoBehaviour {
     private Vector3 lastPosition;
     int moveBack = 0;
 
-    //////////////////////////// ENEMY DETECTIOn PARAMETERS ////////////////////////////
+    //////////////////////////// ENEMY DETECTION PARAMETERS ////////////////////////////
     Vector2 anglePosition;
+
+    bool playerFOUND = false; 
+    bool playerNotFound = true;
+    /* SET THESE TWO VARIABLES ABOVE TO TRUE OR FALSE IF PLAYER IS FOUND WITHIN THE RAYCAST, IF SO THEN THE
+    BEHAVIOR TREE SHOULD THEN SWITCH INTO TRACKING STATE */
 
     //////////////////////////// FUNCTIONS ////////////////////////////
     void Start() {
