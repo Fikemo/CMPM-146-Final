@@ -101,10 +101,6 @@ public class EnemyController : MonoBehaviour {
             else leftDistance = 100000000;
 
             float lowestDistance = Mathf.Min(upDistance, rightDistance, downDistance, leftDistance);
-            Debug.Log("UP: " + upDistance);
-            Debug.Log("RIGHT: " + rightDistance);
-            Debug.Log("DOWN: " + downDistance);
-            Debug.Log("LEFT: " + leftDistance);
 
             if (lowestDistance == upDistance) {
                 Debug.Log("Moving UP");
@@ -128,7 +124,7 @@ public class EnemyController : MonoBehaviour {
     float getDistance(float x1, float y1, float x2, float y2) {
         Vector2 v1 = new Vector2(x1, y1);
         Vector2 v2 = new Vector2(x2, y2);
-        return Vector2.Distance(v2,v1);
+        return Vector2.Distance(v1,v2);
     }
 
     bool free(string direction) {
