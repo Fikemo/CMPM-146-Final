@@ -27,6 +27,10 @@ public class maze : MonoBehaviour
         //origSize = 14;
         //int mazeNumber = 0;
         origSize = mainMenu.optionInt;
+        if (origSize == 10)
+        {
+            origSize++;
+        }
         size = origSize * 2 + 2;
 
         // TextAsset t1 = (TextAsset)Resources.Load("Size" + size.ToString() + "/Maze" + levelNumber.ToString(), typeof(TextAsset));
