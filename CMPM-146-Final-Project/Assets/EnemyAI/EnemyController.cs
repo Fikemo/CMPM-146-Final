@@ -79,7 +79,7 @@ public class EnemyController : MonoBehaviour {
                 if (returning == true)
                 {
                     checkPosition();
-                    EnemySpeed = 2f;
+                    EnemySpeed = 4f;
                     returnToPatrol();
                     return BehaviourTreeStatus.Success;
                 }
