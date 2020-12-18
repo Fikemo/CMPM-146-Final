@@ -33,13 +33,21 @@ public class EnemyController : MonoBehaviour {
     Vector2 anglePosition;
     Vector2 castingPosition;
 
-    bool playerFOUND = false; 
-    
+    bool playerFOUND = false;
     public GameObject playerPosition;
+
+    public GameObject LevelLoader;
 
 
     //////////////////////////// FUNCTIONS ////////////////////////////
     void Start() {
+
+        LevelLoader = GameObject.Find("LevelLoader");
+        int size = LevelLoader.GetComponent<maze>().size;
+        char[,] mazeArray = LevelLoader.GetComponent<maze>().mazeArray;
+
+        char[,] reducedMazeArray = LevelLoader.GetComponent<maze>().reducedMazeArray;
+
         movePoint.parent = null;
 
         var builder = new BehaviourTreeBuilder();
