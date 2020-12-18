@@ -70,7 +70,7 @@ public class Player_Movement : MonoBehaviour
         if (coll.gameObject.name == "Enemy(Clone)") {
             SceneManager.LoadScene("DeathScene");
         }
-        if (coll.gameObject.name == "Exit(Clone)" && USBPickUp.haveUsb) {
+        if (coll.gameObject.name == "Exit(Clone)" && ComputerOpenExit.haveData) {
             SceneManager.LoadScene("EndScene");
         }
     }
