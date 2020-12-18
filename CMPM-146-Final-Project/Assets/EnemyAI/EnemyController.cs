@@ -22,12 +22,10 @@ public class EnemyController : MonoBehaviour {
     private float EnemySpeed = 2f;
     public Transform movePoint;
     public Collider2D enemyColl;
-    private float saveHoriz = 0f;
-    private float saveVert = 0f;
 	public bool upBlock = false;
 	public bool leftBlock = false;
 	public bool rightBlock = false;
-	public bool downBlock = false; 
+	public bool downBlock = false;
     public bool isMoving = false;
     private Vector3 lastPosition;
     int moveBack = 0;
@@ -42,9 +40,7 @@ public class EnemyController : MonoBehaviour {
     public GameObject LevelLoader;
 
     //////////////////////////// ENEMY PATROL PATH ////////////////////////////
-    //string[] path = new string[14];
-    //string = "x-coord y-coord direction"
-    //ex: "1 2 n" (n = north | s = south | w = west | e = east)
+    int pathIndex = 0;
 
     //////////////////////////// FUNCTIONS ////////////////////////////
     void Start() {
@@ -66,14 +62,14 @@ public class EnemyController : MonoBehaviour {
                 if (playerFOUND == true) {
                     checkPosition();
                     moveTowards();
-                    return BehaviourTreeStatus.Success; // IN HERE IS WHERE WE SHOULD IMPLEMENT THE TRACK PLAYER FUNCTIOn
+                    return BehaviourTreeStatus.Success;
                 }
                 return BehaviourTreeStatus.Failure;
             })
-			.Do("action1",  t => 
+			.Do("action1",  t =>
 			{
-				// Action 1.
                 checkPosition();
+                //makeMove(patrolPath);
                 RandMove();
                 return BehaviourTreeStatus.Success;
 			})
@@ -114,18 +110,18 @@ public class EnemyController : MonoBehaviour {
                         {
                             while (maze[i,j-count] != '2')
                                 count++;
-                            n = count - 1;
-                            best = n;
+                            w = count - 1;
+                            best = w;
                             dir = 0;
                         }
                         else if (k == 1) //south
                         {
                             while (maze[i + count, j] != '2')
                                 count++;
-                            e = count - 1;
-                            if (e > best)
+                            s = count - 1;
+                            if (s > best)
                             {
-                                best = e;
+                                best = s;
                                 dir = 1;
                             }
                         }
@@ -133,10 +129,10 @@ public class EnemyController : MonoBehaviour {
                         {
                             while (maze[i, j + count] != '2')
                                 count++;
-                            s = count - 1;
-                            if (s > best)
+                            e = count - 1;
+                            if (e > best)
                             {
-                                best = s;
+                                best = e;
                                 dir = 2;
                             }
                         }
@@ -144,10 +140,10 @@ public class EnemyController : MonoBehaviour {
                         {
                             while (maze[i - count, j] != '2')
                                 count++;
-                            w = count - 1;
-                            if (e > best)
+                            n = count - 1;
+                            if (n > best)
                             {
-                                best = w;
+                                best = n;
                                 dir = 3;
                             }
                         }
@@ -213,12 +209,12 @@ public class EnemyController : MonoBehaviour {
                             }
                             else if (openSide == -1 && ret == false)
                             {
-                                path[patrolIndex] += i + openSide; path[patrolIndex] += ' '; path[patrolIndex] += j - l; path[patrolIndex] += ' '; path[patrolIndex] += 'n';
+                                path[patrolIndex] += i + openSide; path[patrolIndex] += ' '; path[patrolIndex] += j - l + 1; path[patrolIndex] += ' '; path[patrolIndex] += 'n';
                                 patrolIndex++;
                             }
                             else if (openSide == -1 && ret == true)
                             {
-                                path[patrolIndex] += i; path[patrolIndex] += ' '; path[patrolIndex] += j - best + l; path[patrolIndex] += ' '; path[patrolIndex] += 's';
+                                path[patrolIndex] += i; path[patrolIndex] += ' '; path[patrolIndex] += j - best + l - 1; path[patrolIndex] += ' '; path[patrolIndex] += 's';
                                 patrolIndex++;
                             }
                             ret = true;
@@ -414,21 +410,18 @@ public class EnemyController : MonoBehaviour {
                             }
                             else if (openSide == -1 && ret == false)
                             {
-                                path[patrolIndex] += i - l; path[patrolIndex] += ' '; path[patrolIndex] += j + openSide; path[patrolIndex] += ' '; path[patrolIndex] += 'e';
+                                path[patrolIndex] += i - l + 1; path[patrolIndex] += ' '; path[patrolIndex] += j + openSide; path[patrolIndex] += ' '; path[patrolIndex] += 'e';
                                 patrolIndex++;
                             }
                             else if (openSide == -1 && ret == true)
                             {
-                                path[patrolIndex] += i - best + l; path[patrolIndex] += ' '; path[patrolIndex] += j; path[patrolIndex] += ' '; path[patrolIndex] += 'w';
+                                path[patrolIndex] += i - best + l - 1; path[patrolIndex] += ' '; path[patrolIndex] += j; path[patrolIndex] += ' '; path[patrolIndex] += 'w';
                                 patrolIndex++;
                             }
                             ret = true;
                         }
                     }
-                    foreach (string str in path)
-                    {
-                        Debug.Log(str);
-                    }
+                    Debug.Log(path);
                     return path;
                 }
             }
@@ -532,35 +525,100 @@ public class EnemyController : MonoBehaviour {
         ResetTrigger();
         animator.SetTrigger("NorthWalk");
         movePoint.position += new Vector3(0f, 1.6f, 0f);
-        saveHoriz = 0f;
-        saveVert = -1.6f;
+        
+        
     }
 
     void MoveLeft() {
         ResetTrigger();
         animator.SetTrigger("WestWalk");
         movePoint.position += new Vector3(-1.6f, 0f, 0f);
-        saveHoriz = 1.6f;
-        saveVert = 0f;
+        
+        
     }
 
     void MoveRight() {
         ResetTrigger();
         animator.SetTrigger("EastWalk");
         movePoint.position += new Vector3(1.6f, 0f, 0f);
-        saveHoriz = -1.6f;
-        saveVert = 0f;
+        
+        
     }
 
     void MoveDown() {
         ResetTrigger();
         animator.SetTrigger("SouthWalk");
         movePoint.position += new Vector3(0f, -1.6f, 0f);
-        saveHoriz = 0f;
-        saveVert = 1.6f;
+        
+        
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    void makeMove(string[] pPath)
+    {
+        string temp = pPath[pathIndex];
+        string[] temp2 = temp.Split(' ');
+        char coord = temp2[2][0];
+        
+        if (coord == 'n') //moveUp
+        {
+            transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
+            if (isMoving != true)
+            { // If not moving, allow movement
+                ResetTrigger();
+                animator.SetTrigger("NorthWalk");
+                moveBack = 0;
+                lastPosition = movePoint.position;
+                movePoint.position += new Vector3(0f, 1.6f, 0f);
+            }
+        }
+        else if (coord == 'e') //moveRight
+        {
+            transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
+            if (isMoving != true)
+            { // If not moving, allow movement
+                ResetTrigger();
+                animator.SetTrigger("EastWalk");
+                moveBack = 1;
+                lastPosition = movePoint.position;
+                movePoint.position += new Vector3(1.6f, 0f, 0f);
+            }
+        }
+        else if (coord == 's') //moveDown
+        {
+            transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
+            if (isMoving != true)
+            { // If not moving, allow movement
+                ResetTrigger();
+                animator.SetTrigger("SouthWalk");
+                moveBack = 2;
+                lastPosition = movePoint.position;
+                movePoint.position += new Vector3(0f, -1.6f, 0f);
+            }
+        }
+        else //moveLeft
+        {
+            transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
+            if (isMoving != true)
+            { // If not moving, allow movement
+                ResetTrigger();
+                animator.SetTrigger("WestWalk");
+                moveBack = 3;
+                lastPosition = movePoint.position;
+                movePoint.position += new Vector3(-1.6f, 0f, 0f);
+            }
+        }
+
+        if (pathIndex == pPath.Length - 1)
+        {
+            pathIndex = 0;
+        }
+        else
+        {
+            pathIndex++;
+        }
+    }
 
     void RandMove() {
         int move = UnityEngine.Random.Range(0, 4); // RANDOM NUMBER BETWEEN 0 - 3, since 4 is (exclusive) in the random range
@@ -573,8 +631,8 @@ public class EnemyController : MonoBehaviour {
                 moveBack = 0;
                 lastPosition = movePoint.position;
                 movePoint.position += new Vector3(0f, 1.6f, 0f);
-                saveHoriz = 0f;
-                saveVert = -1.6f;
+                
+                
             }
         }
         if (move == 1) { //Moving Right
@@ -586,8 +644,6 @@ public class EnemyController : MonoBehaviour {
                 moveBack = 1;
                 lastPosition = movePoint.position;
                 movePoint.position += new Vector3(1.6f, 0f, 0f);
-                saveHoriz = -1.6f;
-                saveVert = 0f;
             }
         }
         if (move == 2) { //Moving Down
@@ -599,8 +655,6 @@ public class EnemyController : MonoBehaviour {
                 moveBack = 2;
                 lastPosition = movePoint.position;
                 movePoint.position += new Vector3(0f, -1.6f, 0f);
-                saveHoriz = 0f;
-                saveVert = 1.6f;
             }
         }
         if (move == 3) { //Moving Left
@@ -612,8 +666,6 @@ public class EnemyController : MonoBehaviour {
                 moveBack = 3;
                 lastPosition = movePoint.position;
                 movePoint.position += new Vector3(-1.6f, 0f, 0f);
-                saveHoriz = 1.6f;
-                saveVert = 0f;
             }
         }
     }
