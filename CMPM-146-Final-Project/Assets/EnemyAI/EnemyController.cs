@@ -485,7 +485,7 @@ public class EnemyController : MonoBehaviour {
     
     void checkAggro()
     {
-        if(returningToPatrol.Count > 10)
+        if(isMoving != true && returningToPatrol.Count > 10)
         {
             playerFOUND = false;
             returning = true;
@@ -589,6 +589,8 @@ public class EnemyController : MonoBehaviour {
     void MoveUp() {
         ResetTrigger();
         animator.SetTrigger("NorthWalk");
+        moveBack = 0;
+        lastPosition = movePoint.position;
         movePoint.position += new Vector3(0f, 1.6f, 0f);
         
         
@@ -597,6 +599,8 @@ public class EnemyController : MonoBehaviour {
     void MoveLeft() {
         ResetTrigger();
         animator.SetTrigger("WestWalk");
+        moveBack = 3;
+        lastPosition = movePoint.position;
         movePoint.position += new Vector3(-1.6f, 0f, 0f);
         
         
@@ -605,6 +609,8 @@ public class EnemyController : MonoBehaviour {
     void MoveRight() {
         ResetTrigger();
         animator.SetTrigger("EastWalk");
+        moveBack = 1;
+        lastPosition = movePoint.position;
         movePoint.position += new Vector3(1.6f, 0f, 0f);
         
         
@@ -613,6 +619,8 @@ public class EnemyController : MonoBehaviour {
     void MoveDown() {
         ResetTrigger();
         animator.SetTrigger("SouthWalk");
+        moveBack = 2;
+        lastPosition = movePoint.position;
         movePoint.position += new Vector3(0f, -1.6f, 0f);
         
         
