@@ -92,7 +92,7 @@ public class maze : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        enemySpawn = false;
+        enemySpawn = true;
         int i, j = 0;
         for (i = 0; i < size; i++)
         {
@@ -114,7 +114,7 @@ public class maze : MonoBehaviour
                         break;
                     case '4':
                         //Debug.Log("USB KEY");
-                        //t = (GameObject)(Instantiate(floor, new Vector2(column, row), Quaternion.identity));
+                        t = (GameObject)(Instantiate(floor, new Vector2(column, row), Quaternion.identity));
                         t = (GameObject)(Instantiate(key, new Vector2(column, row), Quaternion.identity));
                         break;
                     case '5':

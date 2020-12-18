@@ -237,12 +237,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 12424733}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd4a7b5206ed5eb4d9fd3d486eefdad2, type: 3}
+  m_Script: {fileID: 11500000, guid: 2d7958d9cd991584fb6396967ed5431d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   movePoint: {fileID: 1094896497}
   animator: {fileID: 12424737}
   coll: {fileID: 0}
+  AIControlled: 0
+  levelLoader: {fileID: 0}
+  commands: []
 --- !u!114 &12424736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,6 +411,8 @@ MonoBehaviour:
   exit: {fileID: 1447738291684049362, guid: 3b07e724b331201479894c3b64c59341, type: 3}
   origSize: 0
   size: 0
+  commands: []
+  enemySpawn: 1
 --- !u!4 &925369394
 Transform:
   m_ObjectHideFlags: 0

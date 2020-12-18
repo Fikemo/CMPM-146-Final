@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Player_Movement : MonoBehaviour
+public class Player_Movement_AI : MonoBehaviour
 {
     private float moveSpeed = 5f;
     public Transform movePoint;
@@ -31,7 +31,7 @@ public class Player_Movement : MonoBehaviour
         else {
             moveSpeed = 5f;
         }
-        AIControlled = false;
+        AIControlled = true;
         if ((Vector3.Distance(transform.position, movePoint.position)) <= .05f && !AIControlled) {
             if (Input.GetAxisRaw("Horizontal") == 1f) {
                 movePoint.position += new Vector3(Input.GetAxisRaw("Horizontal") + .6f, 0f, 0f);
