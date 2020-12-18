@@ -19,23 +19,41 @@ public class maze : MonoBehaviour
     public char[,] reducedMazeArray;
     public List<string> commands;
     public bool enemySpawn = true;
-
+    public static int savedLevel;
+    public static int savedSize;
     private void Awake()
     {
-        //origSize = UnityEngine.Random.Range(8, 15);
+    TextAsset t1 = null;
+    if(setRepeatFlag.repeatLevel){
+        Debug.Log("Hello 1");
+        size = savedSize * 2 + 2;
+        t1 = (TextAsset)Resources.Load("Size" + savedSize.ToString() + "/Maze" + savedLevel.ToString(), typeof(TextAsset));
+    }
+    else{
+         Debug.Log("Hello 2");
         int mazeNumber = UnityEngine.Random.Range(0, 100);
+        savedLevel = mazeNumber;
         //origSize = 14;
         //int mazeNumber = 0;
         origSize = mainMenu.optionInt;
+<<<<<<< Updated upstream
         if (origSize == 10)
         {
             origSize++;
         }
+=======
+        savedSize = origSize;
+>>>>>>> Stashed changes
         size = origSize * 2 + 2;
+        t1 = (TextAsset)Resources.Load("Size" + origSize.ToString() + "/Maze" + mazeNumber.ToString(), typeof(TextAsset));
+    }
+        //origSize = UnityEngine.Random.Range(8, 15);
+
+
 
         // TextAsset t1 = (TextAsset)Resources.Load("Size" + size.ToString() + "/Maze" + levelNumber.ToString(), typeof(TextAsset));
         // TextAsset t1 = (TextAsset)Resources.Load("level", typeof(TextAsset));
-        TextAsset t1 = (TextAsset)Resources.Load("Size" + origSize.ToString() + "/Maze" + mazeNumber.ToString(), typeof(TextAsset));
+        
 
         string s = t1.text;
 
@@ -196,7 +214,7 @@ public class maze : MonoBehaviour
                         break;
                     case '4':
                         //Debug.Log("USB KEY");
-                        //t = (GameObject)(Instantiate(floor, new Vector2(column, row), Quaternion.identity));
+                        t = (GameObject)(Instantiate(floor, new Vector2(column, row), Quaternion.identity));
                         t = (GameObject)(Instantiate(key, new Vector2(column, row), Quaternion.identity));
                         break;
                     case '5':

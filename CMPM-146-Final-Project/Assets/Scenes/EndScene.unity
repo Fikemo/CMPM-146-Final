@@ -240,6 +240,7 @@ GameObject:
   - component: {fileID: 478619309}
   - component: {fileID: 478619308}
   - component: {fileID: 478619307}
+  - component: {fileID: 478619310}
   m_Layer: 5
   m_Name: Quit
   m_TagString: Untagged
@@ -322,6 +323,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1883628626}
+        m_TargetAssemblyTypeName: setRepeatFlag, Assembly-CSharp
+        m_MethodName: whenNormPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &478619308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -360,6 +373,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 478619305}
   m_CullTransparentMesh: 0
+--- !u!114 &478619310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 478619305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbacdacfeef9647479dc1d9b8cead1a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1024000077
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,6 +513,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1024000078}
         m_TargetAssemblyTypeName: EndScript, Assembly-CSharp
         m_MethodName: AIGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1883628626}
+        m_TargetAssemblyTypeName: setRepeatFlag, Assembly-CSharp
+        m_MethodName: whenReplayPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -979,6 +1016,7 @@ GameObject:
   - component: {fileID: 1764899565}
   - component: {fileID: 1764899567}
   - component: {fileID: 1764899566}
+  - component: {fileID: 1764899568}
   m_Layer: 5
   m_Name: Face
   m_TagString: Untagged
@@ -1043,6 +1081,61 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1764899564}
   m_CullTransparentMesh: 0
+--- !u!114 &1764899568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764899564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbacdacfeef9647479dc1d9b8cead1a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1883628625
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1883628627}
+  - component: {fileID: 1883628626}
+  m_Layer: 0
+  m_Name: repeatFlag
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1883628626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883628625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbacdacfeef9647479dc1d9b8cead1a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1883628627
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883628625}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.7900655, y: -2.241407, z: -4.577071}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2015008130
 GameObject:
   m_ObjectHideFlags: 0
@@ -1262,6 +1355,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1024000078}
         m_TargetAssemblyTypeName: EndScript, Assembly-CSharp
         m_MethodName: PlayGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1883628626}
+        m_TargetAssemblyTypeName: setRepeatFlag, Assembly-CSharp
+        m_MethodName: whenReplayPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
