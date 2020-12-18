@@ -52,16 +52,7 @@ public class maze : MonoBehaviour
                 k++;
             }
         }
-        string debugArrayString = "";
-        for (i = 0; i < size; i++)
-        {
-            for (j = 0; j < size; j++)
-            {
-                debugArrayString += mazeArray[i, j];
-            }
-            debugArrayString += "\n";
-        }
-        Debug.Log(debugArrayString);
+
 
         int[,] reducedMaze = new int[origSize, origSize];
         for (i = 0; i < origSize; i++)
@@ -85,22 +76,103 @@ public class maze : MonoBehaviour
         }
 
         int[] start = new int[2] { 1, 1 };
-        int[] goal = new int[2] { size - 2, size - 2 };
-        Debug.Log("Goal " + goal[0] + " " + goal[1]);
-        generatePathfinderCommands(start, goal);
+        int[][] goals = new int[3][];
+
+        int[] usb = new int[2];
+        int[] cpu = new int[2];
+
+        string debugArrayString = "";
+        for (i = 0; i < size; i++)
+        {
+            for (j = 0; j < size; j++)
+            {
+
+                if (mazeArray[i, j] == '4')
+                {
+                    usb[0] = i;
+                    usb[1] = j;
+                }
+
+                if (mazeArray[i, j] == '5')
+                {
+                    cpu[0] = i;
+                    cpu[1] = j;
+                }
+
+                debugArrayString += mazeArray[i, j];
+            }
+            debugArrayString += "\n";
+        }
+        Debug.Log(debugArrayString);
+
+
+
+        int[] exit = new int[2] { size - 2, size - 2 };
+
+
+        goals[0] = usb;
+        goals[1] = cpu;
+        goals[2] = exit;
+        Debug.Log("Goal " + exit[0] + " " + exit[1]);
+        List<int[]> pathToUSB = generatePathfinderCommands(start, usb);
+        List<int[]> pathToCPU = generatePathfinderCommands(usb, cpu);
+        List<int[]> pathToExit = generatePathfinderCommands(cpu, exit);
+
+        List<int[]> totalPath = new List<int[]>();
+        totalPath.AddRange(pathToExit);
+        totalPath.AddRange(pathToCPU);
+        totalPath.AddRange(pathToUSB);
+        totalPath.Reverse();
+
+        foreach (int[] c in totalPath)
+        {
+            Debug.Log("Path " + c[0] + " " + c[1]);
+        }
+
+        for (i = 0; i < totalPath.Count - 1; i++)
+        {
+            int[] normalDirection = new int[2];
+
+            normalDirection[0] = totalPath[i + 1][0] - totalPath[i][0];
+            normalDirection[1] = totalPath[i + 1][1] - totalPath[i][1];
+
+            if (normalDirection[0] == 1)
+            {
+                commands.Add("down");
+            }
+            else if (normalDirection[0] == -1)
+            {
+                commands.Add("up");
+            }
+            else if (normalDirection[1] == 1)
+            {
+                commands.Add("right");
+            }
+            else if (normalDirection[1] == -1)
+            {
+                commands.Add("left");
+            }
+        }
+
+        foreach (string c in commands)
+        {
+            Debug.Log("Go " + c);
+        }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-         Scene currentScene = SceneManager.GetActiveScene ();
-         string sceneName = currentScene.name;
-         if(sceneName == "TestScene"){
-             enemySpawn = false;
-         }
-         if(sceneName == "GameScene"){
+        Scene currentScene = SceneManager.GetActiveScene();
+        string sceneName = currentScene.name;
+        if (sceneName == "TestScene")
+        {
+            enemySpawn = false;
+        }
+        if (sceneName == "GameScene")
+        {
             enemySpawn = true;
-         }
+        }
         int i, j = 0;
         for (i = 0; i < size; i++)
         {
@@ -122,7 +194,7 @@ public class maze : MonoBehaviour
                         break;
                     case '4':
                         //Debug.Log("USB KEY");
-                        t = (GameObject)(Instantiate(floor, new Vector2(column, row), Quaternion.identity));
+                        //t = (GameObject)(Instantiate(floor, new Vector2(column, row), Quaternion.identity));
                         t = (GameObject)(Instantiate(key, new Vector2(column, row), Quaternion.identity));
                         break;
                     case '5':
@@ -198,8 +270,12 @@ public class maze : MonoBehaviour
 
 
 
-    private List<string> generatePathfinderCommands(int[] start, int[] goal)
+    private List<int[]> generatePathfinderCommands(int[] start, int[] goal)
     {
+        //int goalNumber = 0;
+        //int[] goal = goals[goalNumber];
+        Debug.Log(goal[0] + ", " + goal[1]);
+
         commands = new List<string>();
         List<int[]> path = new List<int[]>();
 
@@ -218,14 +294,13 @@ public class maze : MonoBehaviour
         {
             int[] current = frontier.Dequeue();
 
-            if ((mazeArray[current[0], current[1]] == '3') || stepLimit > 1000000)
+            if ((current[0] == goal[0] && current[1] == goal[1]) || stepLimit > 1000000)
             {
                 while (current != null)
                 {
                     path.Add(current);
                     current = cameFrom[current];
                 }
-                path.Reverse();
                 break;
             }
             stepLimit++;
@@ -248,7 +323,7 @@ public class maze : MonoBehaviour
                     }
 
                     float priority = newCost + getDistanceSquared(nextCopy, goal);
-                    Debug.Log("Next " + nextCopy[0] + ", " + next[1] + ", priority " + priority);
+                    //Debug.Log("Next " + nextCopy[0] + ", " + next[1] + ", priority " + priority);
                     frontier.Enqueue(nextCopy, priority);
 
                     if (!cameFrom.ContainsKey(nextCopy))
@@ -263,37 +338,9 @@ public class maze : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < path.Count - 1; i++)
-        {
-            int[] normalDirection = new int[2];
 
-            normalDirection[0] = path[i + 1][0] - path[i][0];
-            normalDirection[1] = path[i + 1][1] - path[i][1];
 
-            if (normalDirection[0] == 1)
-            {
-                commands.Add("down");
-            }
-            else if (normalDirection[0] == -1)
-            {
-                commands.Add("up");
-            }
-            else if (normalDirection[1] == 1)
-            {
-                commands.Add("right");
-            }
-            else if (normalDirection[1] == -1)
-            {
-                commands.Add("left");
-            }
-        }
-
-        foreach (int[] s in path)
-        {
-            Debug.Log("Path " + s[0] + " " + s[1]);
-        }
-
-        return commands;
+        return path;
 
 
         /*commands = new List<string>();
