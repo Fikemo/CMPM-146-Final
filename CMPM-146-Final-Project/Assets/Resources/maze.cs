@@ -114,7 +114,7 @@ public class maze : MonoBehaviour
                         break;
                     case '4':
                         //Debug.Log("USB KEY");
-                        //t = (GameObject)(Instantiate(floor, new Vector2(column, row), Quaternion.identity));
+                        t = (GameObject)(Instantiate(floor, new Vector2(column, row), Quaternion.identity));
                         t = (GameObject)(Instantiate(key, new Vector2(column, row), Quaternion.identity));
                         break;
                     case '5':
