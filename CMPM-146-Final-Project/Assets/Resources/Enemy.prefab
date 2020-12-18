@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 699292535095903408}
   - component: {fileID: 699292535095903411}
   - component: {fileID: 6510075152858517853}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,6 +206,7 @@ MonoBehaviour:
   downBlock: 0
   isMoving: 0
   playerPosition: {fileID: 5427553631837989396, guid: 2e3de862910da774db6c4abc005b6529, type: 3}
+  LevelLoader: {fileID: 0}
 --- !u!95 &6510075152858517853
 Animator:
   serializedVersion: 3
@@ -234,7 +235,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 699292535637869043}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: EnemyPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

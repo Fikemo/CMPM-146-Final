@@ -380,6 +380,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCanvas: {fileID: 1564161161}
   optionsCanvas: {fileID: 1358433623}
+  inputField: {fileID: 1401435711}
 --- !u!4 &426938120
 Transform:
   m_ObjectHideFlags: 0
@@ -696,7 +697,7 @@ GameObject:
   - component: {fileID: 676564084}
   - component: {fileID: 676564083}
   m_Layer: 5
-  m_Name: Play
+  m_Name: Done
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1640,8 +1641,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
