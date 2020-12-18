@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 7934299}
   - component: {fileID: 7934298}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: NodeGraph
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -484,7 +484,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5427553631837989396, guid: 2e3de862910da774db6c4abc005b6529, type: 3}
       propertyPath: m_Name
-      value: Player (2)
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5427553631837989396, guid: 2e3de862910da774db6c4abc005b6529, type: 3}
       propertyPath: m_IsActive
