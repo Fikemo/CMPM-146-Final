@@ -19,13 +19,9 @@ public class EnemyController : MonoBehaviour {
     
     //////////////////////////// ENEMY MOVEMENT PARAMETERS ////////////////////////////
 	
-    private float EnemySpeed = 2f;
+    private float EnemySpeed = 1f;
     public Transform movePoint;
     public Collider2D enemyColl;
-	public bool upBlock = false;
-	public bool leftBlock = false;
-	public bool rightBlock = false;
-	public bool downBlock = false;
     public bool isMoving = false;
     private Vector3 lastPosition;
     int moveBack = 0;
@@ -35,8 +31,9 @@ public class EnemyController : MonoBehaviour {
     Vector2 castingPosition;
 
     bool playerFOUND = false;
-    public GameObject playerPosition;
-
+    public GameObject player;
+    float playerPosX;
+    float playerPosY;
     public GameObject LevelLoader;
 
     //////////////////////////// ENEMY PATROL PATH ////////////////////////////
@@ -44,6 +41,8 @@ public class EnemyController : MonoBehaviour {
 
     //////////////////////////// FUNCTIONS ////////////////////////////
     void Start() {
+
+
 
         LevelLoader = GameObject.Find("LevelLoader");
         int size = LevelLoader.GetComponent<maze>().size;
@@ -69,8 +68,8 @@ public class EnemyController : MonoBehaviour {
 			.Do("action1",  t =>
 			{
                 checkPosition();
-                //makeMove(patrolPath);
-                RandMove();
+                makeMove(patrolPath);
+                //RandMove();
                 return BehaviourTreeStatus.Success;
 			})
 		.End()
@@ -79,6 +78,10 @@ public class EnemyController : MonoBehaviour {
 
     void Update() {
        this.tree.Tick(new TimeData(Time.deltaTime));
+       Debug.Log(player.transform.position);
+       playerPosX = player.transform.position.x;
+       playerPosY = player.transform.position.y;
+
     }
     
     /////////////////////////////////////////////////// GUARD PATROL PATH SECTION /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -176,7 +179,6 @@ public class EnemyController : MonoBehaviour {
                                 }
                             }
                         }
-                        Debug.Log("Open Side: " + openSide + " Best: " + best);
 
                         //chart path knowing where there is wall now
                         int patrolIndex = 0;
@@ -243,7 +245,6 @@ public class EnemyController : MonoBehaviour {
                                 }
                             }
                         }
-                        Debug.Log("Open Side: " + openSide + " Best: " + best);
 
                         //chart path knowing where there is wall now
                         int patrolIndex = 0;
@@ -310,7 +311,6 @@ public class EnemyController : MonoBehaviour {
                                 }
                             }
                         }
-                        Debug.Log("Open Side: " + openSide + " Best: " + best);
 
                         //chart path knowing where there is wall now
                         int patrolIndex = 0;
@@ -377,7 +377,6 @@ public class EnemyController : MonoBehaviour {
                                 }
                             }
                         }
-                        Debug.Log("Open Side: " + openSide + " Best: " + best);
 
                         //chart path knowing where there is wall now
                         int patrolIndex = 0;
@@ -421,7 +420,6 @@ public class EnemyController : MonoBehaviour {
                             ret = true;
                         }
                     }
-                    Debug.Log(path);
                     return path;
                 }
             }
@@ -436,36 +434,37 @@ public class EnemyController : MonoBehaviour {
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
 
         if (isMoving != true) {
-            float startingDistance = getDistance(gameObject.transform.position.x, gameObject.transform.position.y, playerPosition.transform.position.x, playerPosition.transform.position.y);
+            float startingDistance = getDistance(gameObject.transform.position.x, gameObject.transform.position.y, playerPosX, playerPosY);
             float upDistance;
             float rightDistance;
             float downDistance;
             float leftDistance;
 
             if (free("Up") == true) {
-                upDistance = getDistance(gameObject.transform.position.x, gameObject.transform.position.y + 1.6f, playerPosition.transform.position.x, playerPosition.transform.position.y);
+                upDistance = getDistance(gameObject.transform.position.x, gameObject.transform.position.y + 1.6f, playerPosX, playerPosY);
             }
             else upDistance = 100000000; 
 
             if (free("Right") == true) {
-                rightDistance = getDistance(gameObject.transform.position.x + 1.6f, gameObject.transform.position.y, playerPosition.transform.position.x, playerPosition.transform.position.y);
+                rightDistance = getDistance(gameObject.transform.position.x + 1.6f, gameObject.transform.position.y, playerPosX, playerPosY);
             }
             else rightDistance = 100000000;
 
             if (free("Down") == true) {
-                downDistance = getDistance(gameObject.transform.position.x, gameObject.transform.position.y - 1.6f, playerPosition.transform.position.x, playerPosition.transform.position.y);
+                downDistance = getDistance(gameObject.transform.position.x, gameObject.transform.position.y - 1.6f, playerPosX, playerPosY);
             }
             else downDistance = 100000000;
 
             if (free("Left") == true) {
-                leftDistance = getDistance(gameObject.transform.position.x - 1.6f, gameObject.transform.position.y, playerPosition.transform.position.x, playerPosition.transform.position.y);
+                leftDistance = getDistance(gameObject.transform.position.x - 1.6f, gameObject.transform.position.y, playerPosX, playerPosY);
             }
             else leftDistance = 100000000;
 
             float lowestDistance = Mathf.Min(upDistance, rightDistance, downDistance, leftDistance);
+            Debug.Log("Up: " + upDistance + " right: " + rightDistance + " down: " + downDistance + " left: " + leftDistance);
 
             if (lowestDistance == upDistance) {
-                Debug.Log("Moving UP");
+                Debug.Log("Moving Up");
                 MoveUp();
             }
             else if (lowestDistance == rightDistance) {
@@ -560,7 +559,7 @@ public class EnemyController : MonoBehaviour {
         string temp = pPath[pathIndex];
         string[] temp2 = temp.Split(' ');
         char coord = temp2[2][0];
-        
+
         if (coord == 'n') //moveUp
         {
             transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
@@ -609,15 +608,18 @@ public class EnemyController : MonoBehaviour {
                 movePoint.position += new Vector3(-1.6f, 0f, 0f);
             }
         }
+        if (isMoving != true)
+        {
+            if (pathIndex == pPath.Length - 1)
+            {
+                pathIndex = 0;
+            }
+            else
+            {
+                pathIndex++;
+            }
+        }
 
-        if (pathIndex == pPath.Length - 1)
-        {
-            pathIndex = 0;
-        }
-        else
-        {
-            pathIndex++;
-        }
     }
 
     void RandMove() {

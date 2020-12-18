@@ -200,12 +200,8 @@ MonoBehaviour:
   animator: {fileID: 6510075152858517853}
   movePoint: {fileID: 699292535637869043}
   enemyColl: {fileID: 6311642085528732830, guid: bcee0488f8ddcca42b848a2ca664951e, type: 3}
-  upBlock: 0
-  leftBlock: 0
-  rightBlock: 0
-  downBlock: 0
   isMoving: 0
-  playerPosition: {fileID: 5427553631837989396, guid: 2e3de862910da774db6c4abc005b6529, type: 3}
+  player: {fileID: 5427553631837989396, guid: 2e3de862910da774db6c4abc005b6529, type: 3}
   LevelLoader: {fileID: 0}
 --- !u!95 &6510075152858517853
 Animator:
