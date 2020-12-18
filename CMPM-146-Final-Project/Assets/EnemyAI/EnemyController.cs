@@ -7,6 +7,11 @@ using FluentBehaviourTree;
 using System.Security.Cryptography.X509Certificates;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Reflection.Emit;
+using System.Linq;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Collections.Specialized;
 
 public class EnemyController : MonoBehaviour {
 
@@ -19,7 +24,7 @@ public class EnemyController : MonoBehaviour {
     
     //////////////////////////// ENEMY MOVEMENT PARAMETERS ////////////////////////////
 	
-    private float EnemySpeed = 1f;
+    private float EnemySpeed = 2f;
     public Transform movePoint;
     public Collider2D enemyColl;
     public bool isMoving = false;
@@ -31,18 +36,20 @@ public class EnemyController : MonoBehaviour {
     Vector2 castingPosition;
 
     bool playerFOUND = false;
-    public GameObject player;
+    bool returning = false;
+    GameObject player;
     float playerPosX;
     float playerPosY;
     public GameObject LevelLoader;
 
     //////////////////////////// ENEMY PATROL PATH ////////////////////////////
     int pathIndex = 0;
+    List<char> returningToPatrol = new List<char>();
 
     //////////////////////////// FUNCTIONS ////////////////////////////
     void Start() {
 
-
+        player = GameObject.Find("Player");
 
         LevelLoader = GameObject.Find("LevelLoader");
         int size = LevelLoader.GetComponent<maze>().size;
@@ -55,21 +62,34 @@ public class EnemyController : MonoBehaviour {
 
         var builder = new BehaviourTreeBuilder();
         this.tree = builder
-		.Selector("my-sequence")
-            .Do("PlayerFound", t => 
+        .Selector("my-sequence")
+            .Do("PlayerFound", t =>
             {
+                checkAggro();
                 if (playerFOUND == true) {
                     checkPosition();
+                    EnemySpeed = 3f;
                     moveTowards();
                     return BehaviourTreeStatus.Success;
                 }
                 return BehaviourTreeStatus.Failure;
             })
-			.Do("action1",  t =>
+            .Do("Returning", t =>
+            {
+                if (returning == true)
+                {
+                    checkPosition();
+                    EnemySpeed = 2f;
+                    returnToPatrol();
+                    return BehaviourTreeStatus.Success;
+                }
+                return BehaviourTreeStatus.Failure;
+            })
+			.Do("Patrol",  t =>
 			{
                 checkPosition();
+                EnemySpeed = 2f;
                 makeMove(patrolPath);
-                //RandMove();
                 return BehaviourTreeStatus.Success;
 			})
 		.End()
@@ -78,7 +98,7 @@ public class EnemyController : MonoBehaviour {
 
     void Update() {
        this.tree.Tick(new TimeData(Time.deltaTime));
-       Debug.Log(player.transform.position);
+
        playerPosX = player.transform.position.x;
        playerPosY = player.transform.position.y;
 
@@ -430,6 +450,48 @@ public class EnemyController : MonoBehaviour {
 
 
     /////////////////////////////////////////////////// ENEMY DETECTION SECTION /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    void returnToPatrol()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
+        if (isMoving != true)
+        {
+            if (!returningToPatrol.Any())
+            {
+                returning = false;
+            }
+            else
+            {
+                char dir = returningToPatrol[0];
+                returningToPatrol.RemoveAt(0);
+                if (dir == 'n')
+                {
+                    MoveUp();
+                }
+                else if (dir == 's')
+                {
+                    MoveDown();
+                }
+                else if (dir == 'w')
+                {
+                    MoveLeft();
+                }
+                else if (dir == 'e')
+                {
+                    MoveRight();
+                }
+            }
+        }  
+    }
+    
+    void checkAggro()
+    {
+        if(returningToPatrol.Count > 10)
+        {
+            playerFOUND = false;
+            returning = true;
+        }
+    }
+    
     void moveTowards() {
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
 
@@ -466,18 +528,22 @@ public class EnemyController : MonoBehaviour {
             if (lowestDistance == upDistance) {
                 Debug.Log("Moving Up");
                 MoveUp();
+                returningToPatrol.Add('s');
             }
             else if (lowestDistance == rightDistance) {
                 Debug.Log("Moving Right");
                 MoveRight();
+                returningToPatrol.Add('w');
             }
             else if (lowestDistance == downDistance) {
                 Debug.Log("Moving Down");
                 MoveDown();
+                returningToPatrol.Add('n');
             }
             else if (lowestDistance == leftDistance) {
                 Debug.Log("Moving Left");
                 MoveLeft();
+                returningToPatrol.Add('e');
             }
         }
     }
@@ -504,7 +570,7 @@ public class EnemyController : MonoBehaviour {
             castingPosition = new Vector2(-1f, 0f);
         }
 
-        int layerMask = LayerMask.GetMask("Default");
+        int layerMask = LayerMask.GetMask("Obstacle");
 
         RaycastHit2D castingHit = Physics2D.Raycast(rayPosition, castingPosition, rayLength, layerMask, 0);
 
@@ -622,56 +688,6 @@ public class EnemyController : MonoBehaviour {
 
     }
 
-    void RandMove() {
-        int move = UnityEngine.Random.Range(0, 4); // RANDOM NUMBER BETWEEN 0 - 3, since 4 is (exclusive) in the random range
-        if (move == 0) { //Moving up
-            transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
-            if (isMoving != true)
-            { // If not moving, allow movement
-                ResetTrigger();
-                animator.SetTrigger("NorthWalk");
-                moveBack = 0;
-                lastPosition = movePoint.position;
-                movePoint.position += new Vector3(0f, 1.6f, 0f);
-                
-                
-            }
-        }
-        if (move == 1) { //Moving Right
-            transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
-            if (isMoving != true)
-            { // If not moving, allow movement
-                ResetTrigger();
-                animator.SetTrigger("EastWalk");
-                moveBack = 1;
-                lastPosition = movePoint.position;
-                movePoint.position += new Vector3(1.6f, 0f, 0f);
-            }
-        }
-        if (move == 2) { //Moving Down
-            transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
-            if (isMoving != true)
-            { // If not moving, allow movement
-                ResetTrigger();
-                animator.SetTrigger("SouthWalk");
-                moveBack = 2;
-                lastPosition = movePoint.position;
-                movePoint.position += new Vector3(0f, -1.6f, 0f);
-            }
-        }
-        if (move == 3) { //Moving Left
-            transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
-            if (isMoving != true)
-            { // If not moving, allow movement
-                ResetTrigger();
-                animator.SetTrigger("WestWalk");
-                moveBack = 3;
-                lastPosition = movePoint.position;
-                movePoint.position += new Vector3(-1.6f, 0f, 0f);
-            }
-        }
-    }
-
     void checkPosition() {
         if (transform.position == movePoint.position) {
             //Debug.Log("Point and Enemy are at same Position");
@@ -745,6 +761,6 @@ public class EnemyController : MonoBehaviour {
                 // WE NEED A POINT TO RESET BACK TO FALSE SO THAT WAY THEY STOP TRACKING THE PLAYER, OR MAYBE WE JSUT ALWAYS HAVE THEM TRACK THE PLAYER
             }
         }
-        Debug.DrawRay(startPosition, anglePosition * 3f, Color.red);
+        //Debug.DrawRay(startPosition, anglePosition * 3f, Color.red);
     }
 }
