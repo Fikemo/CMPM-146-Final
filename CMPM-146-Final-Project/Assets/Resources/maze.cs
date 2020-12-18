@@ -20,14 +20,13 @@ public class maze : MonoBehaviour
     {
         // int size = Random.Range(8, 15);
         // int mazeNumber = Random.Range(0, 100);
-        origSize = 14;
+        origSize = mainMenu.optionInt;
         int mazeNumber = 0;
         size = origSize * 2 + 2;
 
         // TextAsset t1 = (TextAsset)Resources.Load("Size" + size.ToString() + "/Maze" + levelNumber.ToString(), typeof(TextAsset));
         // TextAsset t1 = (TextAsset)Resources.Load("level", typeof(TextAsset));
         TextAsset t1 = (TextAsset)Resources.Load("Size" + origSize.ToString() + "/Maze" + mazeNumber.ToString(), typeof(TextAsset));
-
         string s = t1.text;
 
         int i, j, k = 0;

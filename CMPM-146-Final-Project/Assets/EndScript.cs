@@ -10,6 +10,10 @@ public class EndScript : MonoBehaviour
         SceneManager.LoadScene("GameScene");
     }
 
+    public void AIGame() {
+        SceneManager.LoadScene("TestScene");
+    }
+    
     public void QuitGame() {
         SceneManager.LoadScene("menuScene");
     }
