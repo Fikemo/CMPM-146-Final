@@ -23,7 +23,7 @@ public class USBPickUp : MonoBehaviour
     	usb = GameObject.Find("Key(Clone)");
      }
 		IEnumerator destroyUsb(){
-        	yield return new WaitForSeconds(1);
+        	yield return new WaitForSeconds(0.5f);
 			usb.active = false;
     }	
 }
