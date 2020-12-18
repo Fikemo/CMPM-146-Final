@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using FluentBehaviourTree;
+using System.Security.Cryptography.X509Certificates;
+using System.Runtime.InteropServices;
+using System.Threading;
 
 public class EnemyController : MonoBehaviour {
 
@@ -16,7 +19,7 @@ public class EnemyController : MonoBehaviour {
     
     //////////////////////////// ENEMY MOVEMENT PARAMETERS ////////////////////////////
 	
-    private float EnemySpeed = 1f;
+    private float EnemySpeed = 2f;
     public Transform movePoint;
     public Collider2D enemyColl;
     private float saveHoriz = 0f;
@@ -38,6 +41,10 @@ public class EnemyController : MonoBehaviour {
 
     public GameObject LevelLoader;
 
+    //////////////////////////// ENEMY PATROL PATH ////////////////////////////
+    //string[] path = new string[14];
+    //string = "x-coord y-coord direction"
+    //ex: "1 2 n" (n = north | s = south | w = west | e = east)
 
     //////////////////////////// FUNCTIONS ////////////////////////////
     void Start() {
@@ -45,8 +52,9 @@ public class EnemyController : MonoBehaviour {
         LevelLoader = GameObject.Find("LevelLoader");
         int size = LevelLoader.GetComponent<maze>().size;
         char[,] mazeArray = LevelLoader.GetComponent<maze>().mazeArray;
-
         char[,] reducedMazeArray = LevelLoader.GetComponent<maze>().reducedMazeArray;
+
+        string[] patrolPath = generatePath(mazeArray);
 
         movePoint.parent = null;
 
@@ -74,10 +82,363 @@ public class EnemyController : MonoBehaviour {
     }
 
     void Update() {
-        this.tree.Tick(new TimeData(Time.deltaTime));
+       this.tree.Tick(new TimeData(Time.deltaTime));
+    }
+    
+    /////////////////////////////////////////////////// GUARD PATROL PATH SECTION /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    string[] generatePath(char[,] maze) 
+    {
+        //find the location of the guard
+        int size = maze.GetLength(0);
+        tag = gameObject.tag;
+        for (int i = 0; i < size; i++) //rows (y)
+        {
+            for (int j = 0; j < size; j++) //columns (x)
+            {
+                if (maze[i, j] == tag[0])
+                {
+                    //found the guard
+                    Debug.Log("Found Guard: " + tag + " at (" + i + "," + j + ")");
+
+                    //find the best direction for the guards patrol path to be
+                    int n = 0;
+                    int e = 0;
+                    int s = 0;
+                    int w = 0;
+                    int best = 0;
+                    int dir = 4;
+                    for (int k = 0; k < 4; k++)
+                    {
+                        int count = 0;
+                        if (k == 0) //west
+                        {
+                            while (maze[i,j-count] != '2')
+                                count++;
+                            n = count - 1;
+                            best = n;
+                            dir = 0;
+                        }
+                        else if (k == 1) //south
+                        {
+                            while (maze[i + count, j] != '2')
+                                count++;
+                            e = count - 1;
+                            if (e > best)
+                            {
+                                best = e;
+                                dir = 1;
+                            }
+                        }
+                        else if (k == 2) //east
+                        {
+                            while (maze[i, j + count] != '2')
+                                count++;
+                            s = count - 1;
+                            if (s > best)
+                            {
+                                best = s;
+                                dir = 2;
+                            }
+                        }
+                        else //north
+                        {
+                            while (maze[i - count, j] != '2')
+                                count++;
+                            w = count - 1;
+                            if (e > best)
+                            {
+                                best = w;
+                                dir = 3;
+                            }
+                        }
+                    }
+                    string[] path = new string[best * 2 + 2];
+                    //find walls
+                    int openSide = 0;
+                    //dir = the best direction
+                    //0 = w | 1 = s | 2 = n | 3 = e
+                    if (dir == 0) //west
+                    {
+                        Debug.Log("Best Direction: w");
+                        if (maze[i - 1, j] == '2') //wall above
+                        {
+                            openSide = 1;
+                        }
+                        else //wall below or no wall
+                        {
+                            openSide = -1;
+                        }
+
+                        if (openSide == -1)
+                        {
+                            for (int q = 0; q < best; q++)
+                            {
+                                if (maze[i - 1, j - q] == '2')
+                                {
+                                    openSide = 1;
+                                    break;
+                                }
+                            }
+                        }
+                        Debug.Log("Open Side: " + openSide + " Best: " + best);
+
+                        //chart path knowing where there is wall now
+                        int patrolIndex = 0;
+                        bool ret = false;
+                        for (int p = 0; p < 2; p++)
+                        {
+                            int l;
+                            for (l = 1; l < best + 1; l++)
+                            {
+                                if (ret == false)
+                                {
+                                    path[patrolIndex] += i; path[patrolIndex] += ' '; path[patrolIndex] += j - l; path[patrolIndex] += ' '; path[patrolIndex] += 'w';
+                                    patrolIndex++;
+                                }
+                                else
+                                {
+                                    path[patrolIndex] += i + openSide; path[patrolIndex] += ' '; path[patrolIndex] += j - best + l; path[patrolIndex] += ' '; path[patrolIndex] += 'e';
+                                    patrolIndex++;
+                                }
+                            }
+                            if (openSide == 1 && ret == false)
+                            {
+                                path[patrolIndex] += i + openSide; path[patrolIndex] += ' '; path[patrolIndex] += j - l; path[patrolIndex] += ' '; path[patrolIndex] += 's';
+                                patrolIndex++;
+                            }
+                            else if (openSide == 1 && ret == true)
+                            {
+                                path[patrolIndex] += i; path[patrolIndex] += ' '; path[patrolIndex] += j - best + l; path[patrolIndex] += ' '; path[patrolIndex] += 'n';
+                                patrolIndex++;
+                            }
+                            else if (openSide == -1 && ret == false)
+                            {
+                                path[patrolIndex] += i + openSide; path[patrolIndex] += ' '; path[patrolIndex] += j - l; path[patrolIndex] += ' '; path[patrolIndex] += 'n';
+                                patrolIndex++;
+                            }
+                            else if (openSide == -1 && ret == true)
+                            {
+                                path[patrolIndex] += i; path[patrolIndex] += ' '; path[patrolIndex] += j - best + l; path[patrolIndex] += ' '; path[patrolIndex] += 's';
+                                patrolIndex++;
+                            }
+                            ret = true;
+                        }
+                    }
+                    else if (dir == 1) //south
+                    {
+                        Debug.Log("Best Direction: s");
+                        if (maze[i, j - 1] == '2') //wall left
+                        {
+                            openSide = 1;
+                        }
+                        else //wall right or no wall
+                        {
+                            openSide = -1;
+                        }
+
+                        if (openSide == -1)
+                        {
+                            for (int q = 0; q < best; q++)
+                            {
+                                if (maze[i + q, j - 1] == '2')
+                                {
+                                    openSide = 1;
+                                    break;
+                                }
+                            }
+                        }
+                        Debug.Log("Open Side: " + openSide + " Best: " + best);
+
+                        //chart path knowing where there is wall now
+                        int patrolIndex = 0;
+                        bool ret = false;
+                        for (int p = 0; p < 2; p++)
+                        {
+                            int l;
+                            for (l = 1; l < best + 1; l++)
+                            {
+                                if (ret == false)
+                                {
+                                    path[patrolIndex] += i + l; path[patrolIndex] += ' '; path[patrolIndex] += j; path[patrolIndex] += ' '; path[patrolIndex] += 's';
+                                    patrolIndex++;
+                                }
+                                else
+                                {
+                                    path[patrolIndex] += i + best - l; path[patrolIndex] += ' '; path[patrolIndex] += j + openSide; path[patrolIndex] += ' '; path[patrolIndex] += 'n';
+                                    patrolIndex++;
+                                }
+                            }
+                            if (openSide == 1 && ret == false)
+                            {
+                                path[patrolIndex] += i + l; path[patrolIndex] += ' '; path[patrolIndex] += j + openSide; path[patrolIndex] += ' '; path[patrolIndex] += 'w';
+                                patrolIndex++;
+                            }
+                            else if (openSide == 1 && ret == true)
+                            {
+                                path[patrolIndex] += i + best - l; path[patrolIndex] += ' '; path[patrolIndex] += j; path[patrolIndex] += ' '; path[patrolIndex] += 'e';
+                                patrolIndex++;
+                            }
+                            else if (openSide == -1 && ret == false)
+                            {
+                                path[patrolIndex] += i + l - 1; path[patrolIndex] += ' '; path[patrolIndex] += j + openSide; path[patrolIndex] += ' '; path[patrolIndex] += 'e';
+                                patrolIndex++;
+                            }
+                            else if (openSide == -1 && ret == true)
+                            {
+                                path[patrolIndex] += i + best - l + 1; path[patrolIndex] += ' '; path[patrolIndex] += j; path[patrolIndex] += ' '; path[patrolIndex] += 'w';
+                                patrolIndex++;
+                            }
+                            ret = true;
+                        }
+                    }
+                    else if (dir == 2) //east
+                    {
+                        Debug.Log("Best Direction: e");
+                        if (maze[i - 1, j] == '2') //wall above
+                        {
+                            openSide = 1;
+                        }
+                        else //wall below or no wall
+                        {
+                            openSide = -1;
+                        }
+
+                        if (openSide == -1)
+                        {
+                            for (int q = 0; q < best; q++)
+                            {
+                                if (maze[i - 1, j + q] == '2')
+                                {
+                                    openSide = 1;
+                                    break;
+                                }
+                            }
+                        }
+                        Debug.Log("Open Side: " + openSide + " Best: " + best);
+
+                        //chart path knowing where there is wall now
+                        int patrolIndex = 0;
+                        bool ret = false;
+                        for (int p = 0; p < 2; p++)
+                        {
+                            int l;
+                            for (l = 1; l < best + 1; l++)
+                            {
+                                if (ret == false)
+                                {
+                                    path[patrolIndex] += i; path[patrolIndex] += ' '; path[patrolIndex] += j + l; path[patrolIndex] += ' '; path[patrolIndex] += 'e';
+                                    patrolIndex++;
+                                }
+                                else
+                                {
+                                    path[patrolIndex] += i + openSide; path[patrolIndex] += ' '; path[patrolIndex] += j + best - l; path[patrolIndex] += ' '; path[patrolIndex] += 'w';
+                                    patrolIndex++;
+                                }
+                            }
+                            if (openSide == 1 && ret == false)
+                            {
+                                path[patrolIndex] += i + openSide; path[patrolIndex] += ' '; path[patrolIndex] += j + l + 1; path[patrolIndex] += ' '; path[patrolIndex] += 's';
+                                patrolIndex++;
+                            }
+                            else if (openSide == 1 && ret == true)
+                            {
+                                path[patrolIndex] += i; path[patrolIndex] += ' '; path[patrolIndex] += j + best - l - 1; path[patrolIndex] += ' '; path[patrolIndex] += 'n';
+                                patrolIndex++;
+                            }
+                            else if (openSide == -1 && ret == false)
+                            {
+                                path[patrolIndex] += i + openSide; path[patrolIndex] += ' '; path[patrolIndex] += j + l - 1; path[patrolIndex] += ' '; path[patrolIndex] += 'n';
+                                patrolIndex++;
+                            }
+                            else if (openSide == -1 && ret == true)
+                            {
+                                path[patrolIndex] += i; path[patrolIndex] += ' '; path[patrolIndex] += j + best - l + 1; path[patrolIndex] += ' '; path[patrolIndex] += 's';
+                                patrolIndex++;
+                            }
+                            ret = true;
+                        }
+                    }
+                    else //north
+                    {
+                        Debug.Log("Best Direction: n");
+                        if (maze[i, j - 1] == '2') //wall left
+                        {
+                            openSide = 1;
+                        }
+                        else //wall right or no wall
+                        {
+                            openSide = -1;
+                        }
+
+                        if (openSide == -1)
+                        {
+                            for (int q = 0; q < best; q++)
+                            {
+                                if (maze[i - q, j - 1] == '2')
+                                {
+                                    openSide = 1;
+                                    break;
+                                }
+                            }
+                        }
+                        Debug.Log("Open Side: " + openSide + " Best: " + best);
+
+                        //chart path knowing where there is wall now
+                        int patrolIndex = 0;
+                        bool ret = false;
+                        for (int p = 0; p < 2; p++)
+                        {
+                            int l;
+                            for (l = 1; l < best + 1; l++)
+                            {
+                                if (ret == false)
+                                {
+                                    path[patrolIndex] += i - l; path[patrolIndex] += ' '; path[patrolIndex] += j; path[patrolIndex] += ' '; path[patrolIndex] += 'n';
+                                    patrolIndex++;
+                                }
+                                else
+                                {
+                                    path[patrolIndex] += i - best + l; path[patrolIndex] += ' '; path[patrolIndex] += j + openSide; path[patrolIndex] += ' '; path[patrolIndex] += 's';
+                                    patrolIndex++;
+                                }
+                            }
+                            if (openSide == 1 && ret == false)
+                            {
+                                path[patrolIndex] += i - l; path[patrolIndex] += ' '; path[patrolIndex] += j + openSide; path[patrolIndex] += ' '; path[patrolIndex] += 'w';
+                                patrolIndex++;
+                            }
+                            else if (openSide == 1 && ret == true)
+                            {
+                                path[patrolIndex] += i - best + l; path[patrolIndex] += ' '; path[patrolIndex] += j; path[patrolIndex] += ' '; path[patrolIndex] += 'e';
+                                patrolIndex++;
+                            }
+                            else if (openSide == -1 && ret == false)
+                            {
+                                path[patrolIndex] += i - l; path[patrolIndex] += ' '; path[patrolIndex] += j + openSide; path[patrolIndex] += ' '; path[patrolIndex] += 'e';
+                                patrolIndex++;
+                            }
+                            else if (openSide == -1 && ret == true)
+                            {
+                                path[patrolIndex] += i - best + l; path[patrolIndex] += ' '; path[patrolIndex] += j; path[patrolIndex] += ' '; path[patrolIndex] += 'w';
+                                patrolIndex++;
+                            }
+                            ret = true;
+                        }
+                    }
+                    foreach (string str in path)
+                    {
+                        Debug.Log(str);
+                    }
+                    return path;
+                }
+            }
+        }
+        return null;
     }
 
-/////////////////////////////////////////////////// ENEMY DETECTION SECTION /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    /////////////////////////////////////////////////// ENEMY DETECTION SECTION /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     void moveTowards() {
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, EnemySpeed * Time.deltaTime);
 
