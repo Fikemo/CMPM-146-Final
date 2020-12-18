@@ -412,7 +412,7 @@ MonoBehaviour:
   origSize: 0
   size: 0
   commands: []
-  enemySpawn: 1
+  enemySpawn: 0
 --- !u!4 &925369394
 Transform:
   m_ObjectHideFlags: 0
