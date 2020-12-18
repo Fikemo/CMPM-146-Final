@@ -11,16 +11,18 @@ public class maze : MonoBehaviour
     public GameObject key;
     public GameObject computer;
 	public GameObject exit;
+    public int origSize;
+    public int size;
     public char[,] mazeArray;
     public char[,] reducedMazeArray;
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
         // int size = Random.Range(8, 15);
         // int mazeNumber = Random.Range(0, 100);
-        int origSize = 14;
+        origSize = 14;
         int mazeNumber = 0;
-        int size = origSize * 2 + 2;
+        size = origSize * 2 + 2;
 
         // TextAsset t1 = (TextAsset)Resources.Load("Size" + size.ToString() + "/Maze" + levelNumber.ToString(), typeof(TextAsset));
         // TextAsset t1 = (TextAsset)Resources.Load("level", typeof(TextAsset));
@@ -34,14 +36,14 @@ public class maze : MonoBehaviour
         mazeArray = new char[size, size];
         for (i = 0; i < size; i++)
         {
-            for(j = 0; j < size; j++)
+            for (j = 0; j < size; j++)
             {
                 /*if (s[k] == '\n')
                 {
                     k++;
                 }*/
 
-                while(k < s.Length && s[k] != '0' && s[k] != '2' && s[k] != '3' && s[k] != '4' && s[k] != '5' && s[k] != '6' && s[k] != '7' && s[k] != '8')
+                while (k < s.Length && s[k] != '0' && s[k] != '2' && s[k] != '3' && s[k] != '4' && s[k] != '5' && s[k] != '6' && s[k] != '7' && s[k] != '8')
                 {
                     k++;
                 }
@@ -61,10 +63,10 @@ public class maze : MonoBehaviour
         }
 
         char[,] reducedMaze = new char[origSize, origSize];
-        for (i = 0; i < origSize; i ++)
+        for (i = 0; i < origSize; i++)
         {
             int iScaled = (i * 2) + 2;
-            for (j = 0; j < origSize; j ++)
+            for (j = 0; j < origSize; j++)
             {
                 int jScaled = (j * 2) + 2;
                 reducedMaze[i, j] = mazeArray[iScaled, jScaled];
@@ -80,7 +82,13 @@ public class maze : MonoBehaviour
             }
             debugReducedArrayString += "\n";
         }
+    }
 
+    // Start is called before the first frame update
+    void Start()
+    {
+
+        int i, j = 0;
         for (i = 0; i < size; i++)
         {
             for (j = 0; j < size; j++)
@@ -111,7 +119,8 @@ public class maze : MonoBehaviour
                     case '7':
                     case '8':
                         t = (GameObject)(Instantiate(floor, new Vector2(column, row), Quaternion.identity));
-                        t = (GameObject)(Instantiate(enemy, new Vector2(column, row), Quaternion.identity));
+                        t = Instantiate(enemy, new Vector2(column, row), Quaternion.identity);
+                        t.gameObject.tag = mazeArray[i, j].ToString();
                         break;
                 }
             }
