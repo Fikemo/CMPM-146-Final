@@ -92,7 +92,7 @@ public class maze : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        enemySpawn = false;
+        enemySpawn = true;
         int i, j = 0;
         for (i = 0; i < size; i++)
         {

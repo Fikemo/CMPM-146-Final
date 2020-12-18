@@ -31,7 +31,7 @@ public class Player_Movement : MonoBehaviour
         else {
             moveSpeed = 5f;
         }
-        AIControlled = true;
+        AIControlled = false;
         if ((Vector3.Distance(transform.position, movePoint.position)) <= .05f && !AIControlled) {
             if (Input.GetAxisRaw("Horizontal") == 1f) {
                 movePoint.position += new Vector3(Input.GetAxisRaw("Horizontal") + .6f, 0f, 0f);
