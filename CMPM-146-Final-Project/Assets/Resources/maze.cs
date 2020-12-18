@@ -33,17 +33,12 @@ public class maze : MonoBehaviour
          Debug.Log("Hello 2");
         int mazeNumber = UnityEngine.Random.Range(0, 100);
         savedLevel = mazeNumber;
-        //origSize = 14;
-        //int mazeNumber = 0;
         origSize = mainMenu.optionInt;
-<<<<<<< Updated upstream
-        if (origSize == 10)
+         if (origSize == 10)
         {
             origSize++;
         }
-=======
         savedSize = origSize;
->>>>>>> Stashed changes
         size = origSize * 2 + 2;
         t1 = (TextAsset)Resources.Load("Size" + origSize.ToString() + "/Maze" + mazeNumber.ToString(), typeof(TextAsset));
     }
@@ -58,6 +53,8 @@ public class maze : MonoBehaviour
         string s = t1.text;
 
         int i, j, k = 0;
+        // Debug.Log(s.Length);
+        // s = s.Replace("\n", "");
         mazeArray = new char[size, size];
         for (i = 0; i < size; i++)
         {
@@ -238,6 +235,25 @@ public class maze : MonoBehaviour
     private List<int[]> getNeighbors(int[] currentCoor)
     {
         List<int[]> neighbors = new List<int[]>();
+        /*int xi,yi;
+
+        int[] xOffset = new int[3] { -1, 0, 1 };
+        int[] yOffset = new int[3] { -1, 0, 1 };
+
+        for(xi = 0; xi < xOffset.Length; xi++)
+        {
+            for (yi = 0; yi < yOffset.Length; yi++)
+            {
+                if (Math.Abs(xi) != Math.Abs(yi))
+                {
+                    if (mazeArray[currentCoor[0] + xOffset[xi], currentCoor[1] + yOffset[yi]] != '2') // just avoid walls
+                    {
+                        int[] n = new int[2] { currentCoor[0] + xOffset[xi], currentCoor[1] + yOffset[yi] };
+                        neighbors.Add(n);
+                    }
+                }
+            }
+        }*/
 
         if (mazeArray[currentCoor[0] + 1, currentCoor[1]] != '2')
         {
@@ -273,6 +289,8 @@ public class maze : MonoBehaviour
 
     private List<int[]> generatePathfinderCommands(int[] start, int[] goal)
     {
+        //int goalNumber = 0;
+        //int[] goal = goals[goalNumber];
         Debug.Log(goal[0] + ", " + goal[1]);
 
         commands = new List<string>();
@@ -293,7 +311,7 @@ public class maze : MonoBehaviour
         {
             int[] current = frontier.Dequeue();
 
-            if ((current[0] == goal[0] && current[1] == goal[1]))
+            if ((current[0] == goal[0] && current[1] == goal[1]) || stepLimit > 1000000)
             {
                 while (current != null)
                 {
@@ -322,6 +340,7 @@ public class maze : MonoBehaviour
                     }
 
                     float priority = newCost + getDistanceSquared(nextCopy, goal);
+                    //Debug.Log("Next " + nextCopy[0] + ", " + next[1] + ", priority " + priority);
                     frontier.Enqueue(nextCopy, priority);
 
                     if (!cameFrom.ContainsKey(nextCopy))
@@ -340,6 +359,384 @@ public class maze : MonoBehaviour
 
         return path;
 
+
+        /*commands = new List<string>();
+
+        List<int[]> path = new List<int[]>();
+        int stepLimit = 0;
+
+        SimplePriorityQueue<int[]> frontier = new SimplePriorityQueue<int[]>();
+
+        frontier.Enqueue(start, 0);
+
+        Dictionary<int[], int[]> cameFrom = new Dictionary<int[], int[]>();
+        cameFrom.Add(start, null);
+
+        Dictionary<int[], float> costSoFar = new Dictionary<int[], float>();
+        costSoFar.Add(start, 0f);
+
+        while(frontier.Count > 0)
+        {
+            int[] current = frontier.Dequeue();
+
+            if((current[0] == goal[0] && current[1] == goal[1]) || stepLimit > 1000000)
+            {
+                int[] ct = current;
+                while (ct != null)
+                {
+                    path.Add(ct);
+                    ct = cameFrom[ct];
+                }
+                path.Reverse();
+                break;
+            }
+            stepLimit++;
+
+            foreach(int[] next in getNeighbors(current))
+            {
+                float newCost = costSoFar[current] + 1;
+                costSoFar[next] = newCost;
+                float priority = newCost;
+                frontier.Enqueue(next, priority);
+                cameFrom[next] = current;
+            }
+        }
+
+        for (int i = 0; i < path.Count - 1; i++)
+        {
+            int[] normalDirection = new int[2];
+
+            normalDirection[0] = path[i + 1][0] - path[i][0];
+            normalDirection[1] = path[i + 1][1] - path[i][1];
+
+            if (normalDirection[0] == 1)
+            {
+                commands.Add("down");
+            }
+            else if (normalDirection[0] == -1)
+            {
+                commands.Add("up");
+            }
+            else if (normalDirection[1] == 1)
+            {
+                commands.Add("right");
+            }
+            else if (normalDirection[1] == -1)
+            {
+                commands.Add("left");
+            }
+        }
+
+        return commands;*/
+
+        /*Dictionary<float, List<int[]>> frontier = new Dictionary<float, List<int[]>>();
+
+        void push(float priority, int[] value)
+        {
+            if (!frontier.ContainsKey(priority))
+            {
+                frontier.Add(priority, new List<int[]>());
+            }
+
+            frontier[priority].Insert(0, value);
+        }
+
+        int[] pop()
+        {
+            List<float> list = frontier.Keys.ToList(); // put the keys (priorities) in a list
+            list.Sort(); // sort the list
+
+            float firstKey = list[0]; // get the first priority
+
+            int[] valueToReturn = frontier[firstKey][0]; // get the first int[] of the first priority list
+
+            frontier[firstKey].RemoveAt(0); // remove that value from that list
+
+            if (frontier[firstKey].Count <= 0)
+            {
+                frontier.Remove(firstKey); // if the list is now empty, remove it from the dictionary
+            }
+
+            return valueToReturn; // return the top priority value
+        }
+
+        push(0f, start);
+
+        Dictionary<int[], int[]> cameFrom = new Dictionary<int[], int[]>();
+        cameFrom.Add(start, null);
+
+        Dictionary<int[], float> costSoFar = new Dictionary<int[], float>();
+        costSoFar.Add(start, 0f);
+
+        while( frontier.Count > 0)
+        {
+            int[] current = pop();
+
+            if ((current[0] == goal[0] && current[1] == goal[1]) || stepLimit > 1000000)
+            {
+                int[] ct = current;
+                while (ct != null)
+                {
+                    path.Add(ct);
+                    ct = cameFrom[ct];
+                }
+                path.Reverse();
+                break;
+            }
+            stepLimit++;
+
+            foreach(int[] next in getNeighbors(current))
+            {
+                float newCost = costSoFar[current] + 1;
+                if(!costSoFar.ContainsKey(next) || newCost < costSoFar[next])
+                {
+                    if (!costSoFar.ContainsKey(next))
+                    {
+                        costSoFar.Add(next, newCost);
+                    }
+                    else
+                    {
+                        costSoFar[next] = newCost;
+                    }
+
+                    float priority = newCost;// + getDistanceSquared(next, goal);
+                    push(priority, next);
+
+                    if (!cameFrom.ContainsKey(next))
+                    {
+                        cameFrom.Add(next, current);
+                    }
+                    else
+                    {
+                        cameFrom[next] = current;
+                    }
+                }
+            }
+        }
+
+        foreach(int[] p in path)
+        {
+            Debug.Log("Path " + p[0] + ", " + p[1]);
+        }
+
+        for (int i = 0; i < path.Count - 1; i++)
+        {
+            int[] normalDirection = new int[2];
+
+            normalDirection[0] = path[i + 1][0] - path[i][0];
+            normalDirection[1] = path[i + 1][1] - path[i][1];
+
+            if (normalDirection[0] == 1)
+            {
+                commands.Add("down");
+            }
+            else if (normalDirection[0] == -1)
+            {
+                commands.Add("up");
+            }
+            else if (normalDirection[1] == 1)
+            {
+                commands.Add("right");
+            }
+            else if (normalDirection[1] == -1)
+            {
+                commands.Add("left");
+            }
+        }
+
+        return commands;*/
+
+
+        /*int stepLimit = 0;
+
+        commands = new List<string>();
+
+        List<int[]> path = new List<int[]>();
+
+        SortedList<float, int[]> frontier = new SortedList<float, int[]>();
+        frontier.Add(0, start);
+
+        Dictionary<int[], int[]> cameFrom = new Dictionary<int[], int[]>();
+        cameFrom[start] = null;
+
+        Dictionary<int[], float> costSoFar = new Dictionary<int[], float>();
+        costSoFar[start] = 0f;
+
+        void pushToFrontier(float priority, int[] value)
+        {
+            if (frontier.ContainsKey(priority))
+            {
+                int[] tempVal = frontier[priority];
+                frontier[priority] = value;
+                pushToFrontier(priority + 0.001f, tempVal);
+            }
+            else
+            {
+                frontier.Add(priority, value);
+            }
+        }
+
+        while (frontier.Count > 0)
+        {
+            int[] current = frontier[0];
+
+            if (stepLimit > 10000)
+            {
+                int[] ct = current;
+                while (ct != null)
+                {
+                    path.Add(ct);
+                    ct = cameFrom[ct];
+                }
+
+                break;
+            }
+            stepLimit++;
+
+            if (current[0] == goal[0] && current[1] == current[1])
+            {
+                int[] ct = current;
+                while(ct != null)
+                {
+                    path.Add(ct);
+                    ct = cameFrom[ct];
+                }
+                
+                break;
+            }
+
+            foreach(int[] next in getNeighbors(current))
+            {
+                float newCost = costSoFar[current] + 1;
+                if(!costSoFar.ContainsKey(next) || newCost < costSoFar[next])
+                {
+                    costSoFar[next] = newCost;
+                    float priority = newCost + getDistanceSquared(goal, next);
+                    pushToFrontier(priority, next);
+                    cameFrom[next] = current;
+                }
+            }
+        }
+
+        foreach(int[] p in path)
+        {
+            Debug.Log("Path " + p[0] + ", " + p[1]);
+        }
+
+        return commands;*/
+
+        /*commands = new List<string>(); //list of commands ex. <right, left, right, up, down>
+
+        List<int[]> path = new List<int[]>(); //list of path coordinates ex. <[1,1], [1,2], [1,3], [2,3]>
+
+        //int[] start = new int[2] { 1, 1 }; //starting coordinate of player
+
+        SortedList<float, int[]> heapQ = new SortedList<float, int[]>();
+        heapQ.Add(0f, start);
+
+        void push(float priority, int[] value)
+        {
+            if (heapQ.ContainsKey(priority))
+            {
+                int[] tempVal = heapQ[priority];
+                heapQ[priority] = value;
+                push(priority + 0.001f, tempVal);
+            }
+            else
+            {
+                heapQ.Add(priority, value);
+            }
+        }
+
+        Dictionary<int[], int[]> cameFrom = new Dictionary<int[], int[]>();
+        cameFrom[start] = null;
+
+        Dictionary<int[], int> costSoFar = new Dictionary<int[], int>();
+        costSoFar[start] = 0;
+
+        int timer = 0;
+
+        while (heapQ.Count > 0)
+        {
+
+            float firstKey = heapQ.Keys[0];
+            Debug.Log(firstKey);
+            int[] current = heapQ[firstKey];
+            Debug.Log("current cell " + current[0] + " " + current[1]);
+            heapQ.RemoveAt(0);
+            Debug.Log("heapQ.Count: " + heapQ.Count);
+
+            if (timer > 10000)
+            {
+                int[] ct = current;
+                while (ct != null)
+                {
+                    path.Add(ct);
+                    ct = cameFrom[ct];
+                }
+                path.Reverse();
+                break;
+            }
+            timer++;
+
+            //reconstruct path
+            if (current[0] == goal[0] && current[1] == goal[1])
+            {
+                int[] ct = current;
+                while(ct != null)
+                {
+                    path.Add(ct);
+                    ct = cameFrom[ct];
+                }
+                path.Reverse();
+                break;
+            }
+
+            foreach(int[] next in getNeighbors(current))
+            {
+                int newCost = costSoFar[current] + 1;
+                if((!costSoFar.ContainsKey(next) || newCost < costSoFar[next]))
+                {
+                    costSoFar[next] = newCost;
+                    float priority = newCost;
+                    Debug.Log(("priority ", priority)); //lower proirity has more prority and appears sooner in the queue
+                    push(priority, next);
+                    cameFrom[next] = current;
+                }
+            }
+        }
+
+        for (int i = 0; i < path.Count - 1; i++)
+        {
+            int[] normalDirection = new int[2];
+
+            normalDirection[0] = path[i + 1][0] - path[i][0];
+            normalDirection[1] = path[i + 1][1] - path[i][1];
+
+            if (normalDirection[0] == 1)
+            {
+                commands.Add("down");
+            }
+            else if (normalDirection[0] == -1)
+            {
+                commands.Add("up");
+            }
+            else if (normalDirection[1] == 1)
+            {
+                commands.Add("right");
+            }
+            else if (normalDirection[1] == -1)
+            {
+                commands.Add("left");
+            }
+        }
+
+        foreach(int[] s in path)
+        {
+            Debug.Log("Path " + s[0] + " " + s[1]);
+        }
+
+        return commands;*/
     }
 }
 
