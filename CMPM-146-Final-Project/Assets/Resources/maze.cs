@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Priority_Queue;
+using UnityEngine.SceneManagement;
 
 public class maze : MonoBehaviour
 {
@@ -92,7 +93,14 @@ public class maze : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        enemySpawn = true;
+         Scene currentScene = SceneManager.GetActiveScene ();
+         string sceneName = currentScene.name;
+         if(sceneName == "TestScene"){
+             enemySpawn = false;
+         }
+         if(sceneName == "GameScene"){
+            enemySpawn = true;
+         }
         int i, j = 0;
         for (i = 0; i < size; i++)
         {
